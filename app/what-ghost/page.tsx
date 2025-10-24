@@ -23,6 +23,8 @@ export default function WhatGhostPage() {
   const [answers, setAnswers] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [navigating, setNavigating] = useState(false);
+  const [loadingQuestion, setLoadingQuestion] = useState(false);
+  const [loadingResult, setLoadingResult] = useState(false);
 
   useEffect(() => {
     const studentId = localStorage.getItem('studentId');
@@ -202,8 +204,18 @@ export default function WhatGhostPage() {
     setAnswers(newAnswers);
 
     if (currentQuestion < questions.length - 1) {
+      // Show loading animation for next question
+      setLoadingQuestion(true);
+
+      // Wait for 500ms before showing next question
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       setCurrentQuestion(currentQuestion + 1);
+      setLoadingQuestion(false);
     } else {
+      // Show full-page loading for result
+      setLoadingResult(true);
+
       // Quiz complete - calculate and save result
       const ghostResult = calculateGhostResult(newAnswers);
 
@@ -229,6 +241,10 @@ export default function WhatGhostPage() {
         }
       }
 
+      // Wait a bit before showing result
+      await new Promise(resolve => setTimeout(resolve, 800));
+
+      setLoadingResult(false);
       setShowResult(true);
     }
   };
@@ -307,6 +323,10 @@ export default function WhatGhostPage() {
 
   if (navigating) {
     return <LoadingScreen />;
+  }
+
+  if (loadingResult) {
+    return <LoadingScreen message="กำลังคำนวณผล..." />;
   }
 
   return (
@@ -391,87 +411,97 @@ export default function WhatGhostPage() {
             ) : (
               // Question View
               <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-3 sm:p-5">
-                <div className="mb-2 sm:mb-4">
-                  <div className="flex justify-between items-center text-halloween-gray text-[10px] sm:text-sm mb-1.5 sm:mb-2">
-                    <div className="flex items-center gap-2">
-                      {currentQuestion > 0 && (
-                        <button
-                          type="button"
-                          onClick={handleBack}
-                          className="text-halloween-orange hover:text-halloween-red transition-colors"
-                          aria-label="Previous question"
-                        >
-                          <svg
-                            className="w-4 h-4 sm:w-5 sm:h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M15 19l-7-7 7-7"
-                            />
-                          </svg>
-                        </button>
-                      )}
-                      <span>คำถามที่ {currentQuestion + 1}</span>
-                    </div>
-                    <span>
-                      {currentQuestion + 1} / {questions.length}
-                    </span>
+                {loadingQuestion ? (
+                  // Loading animation within quiz card
+                  <div className="flex flex-col items-center justify-center py-12 sm:py-20">
+                    <div className="animate-spin h-12 w-12 sm:h-16 sm:w-16 border-4 border-halloween-orange border-t-transparent rounded-full"></div>
+                    <p className="mt-4 text-halloween-cream text-sm sm:text-lg">กำลังโหลดคำถามถัดไป...</p>
                   </div>
-                  <div className="bg-halloween-dark h-1.5 sm:h-2 rounded-full">
-                    <div className={`bg-halloween-orange h-1.5 sm:h-2 rounded-full transition-all ${progressClass}`}></div>
-                  </div>
-                </div>
-
-                {/* Question Image */}
-                {questions[currentQuestion].image && (
-                  <div className="mb-2 sm:mb-4 flex justify-center">
-                    <Image
-                      src={questions[currentQuestion].image}
-                      alt={questions[currentQuestion].q}
-                      width={564}
-                      height={360}
-                      sizes="(max-width: 640px) 100vw, 564px"
-                      className="rounded-lg w-full max-h-40 sm:max-h-64 object-contain"
-                      priority={currentQuestion === 0}
-                      quality={85}
-                    />
-                  </div>
-                )}
-
-                <h3 className="text-base sm:text-xl font-bold text-halloween-cream mb-2 sm:mb-4">
-                  {questions[currentQuestion].q}
-                </h3>
-
-                <div className="space-y-1.5 sm:space-y-2">
-                  {questions[currentQuestion].options.map((option, index) => {
-                    const isSelected = answers[currentQuestion] === option.value;
-                    return (
-                      <button
-                        key={index}
-                        type="button"
-                        onClick={() => handleAnswer(option.value)}
-                        className={`w-full text-left border-2 rounded-lg px-2.5 py-2 sm:px-4 sm:py-3 text-xs sm:text-base transition-all active:scale-98 ${
-                          isSelected
-                            ? 'bg-halloween-orange/90 border-halloween-orange text-halloween-dark font-semibold'
-                            : 'bg-halloween-dark/90 hover:bg-halloween-purple border-halloween-purple hover:border-halloween-orange text-halloween-cream'
-                        }`}
-                      >
-                        <span className={`font-bold mr-1.5 sm:mr-3 ${isSelected ? 'text-halloween-dark' : 'text-halloween-orange'}`}>
-                          {option.value}.
+                ) : (
+                  <>
+                    <div className="mb-2 sm:mb-4">
+                      <div className="flex justify-between items-center text-halloween-gray text-[10px] sm:text-sm mb-1.5 sm:mb-2">
+                        <div className="flex items-center gap-2">
+                          {currentQuestion > 0 && (
+                            <button
+                              type="button"
+                              onClick={handleBack}
+                              className="text-halloween-orange hover:text-halloween-red transition-colors"
+                              aria-label="Previous question"
+                            >
+                              <svg
+                                className="w-4 h-4 sm:w-5 sm:h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M15 19l-7-7 7-7"
+                                />
+                              </svg>
+                            </button>
+                          )}
+                          <span>คำถามที่ {currentQuestion + 1}</span>
+                        </div>
+                        <span>
+                          {currentQuestion + 1} / {questions.length}
                         </span>
-                        {isSelected && (
-                          <span className="mr-1.5 sm:mr-2">✓</span>
-                        )}
-                        {option.text}
-                      </button>
-                    );
-                  })}
-                </div>
+                      </div>
+                      <div className="bg-halloween-dark h-1.5 sm:h-2 rounded-full">
+                        <div className={`bg-halloween-orange h-1.5 sm:h-2 rounded-full transition-all ${progressClass}`}></div>
+                      </div>
+                    </div>
+
+                    {/* Question Image */}
+                    {questions[currentQuestion].image && (
+                      <div className="mb-2 sm:mb-4 flex justify-center">
+                        <Image
+                          src={questions[currentQuestion].image}
+                          alt={questions[currentQuestion].q}
+                          width={564}
+                          height={360}
+                          sizes="(max-width: 640px) 100vw, 564px"
+                          className="rounded-lg w-full max-h-40 sm:max-h-64 object-contain"
+                          priority={currentQuestion === 0}
+                          quality={85}
+                        />
+                      </div>
+                    )}
+
+                    <h3 className="text-base sm:text-xl font-bold text-halloween-cream mb-2 sm:mb-4">
+                      {questions[currentQuestion].q}
+                    </h3>
+
+                    <div className="space-y-1.5 sm:space-y-2">
+                      {questions[currentQuestion].options.map((option, index) => {
+                        const isSelected = answers[currentQuestion] === option.value;
+                        return (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => handleAnswer(option.value)}
+                            className={`w-full text-left border-2 rounded-lg px-2.5 py-2 sm:px-4 sm:py-3 text-xs sm:text-base transition-all active:scale-98 ${
+                              isSelected
+                                ? 'bg-halloween-orange/90 border-halloween-orange text-halloween-dark font-semibold'
+                                : 'bg-halloween-dark/90 hover:bg-halloween-purple border-halloween-purple hover:border-halloween-orange text-halloween-cream'
+                            }`}
+                          >
+                            <span className={`font-bold mr-1.5 sm:mr-3 ${isSelected ? 'text-halloween-dark' : 'text-halloween-orange'}`}>
+                              {option.value}.
+                            </span>
+                            {isSelected && (
+                              <span className="mr-1.5 sm:mr-2">✓</span>
+                            )}
+                            {option.text}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
