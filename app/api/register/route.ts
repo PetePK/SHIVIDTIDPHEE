@@ -1,0 +1,356 @@
+import { NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
+import QRCode from 'qrcode';
+import { sendEmail } from '@/lib/email';
+
+// Simple in-memory rate limiter
+const rateLimitMap = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW = 60000; // 1 minute
+const MAX_REQUESTS = 3; // Max 3 registrations per minute per IP
+
+function checkRateLimit(identifier: string): boolean {
+  const now = Date.now();
+  const timestamps = rateLimitMap.get(identifier) || [];
+
+  // Remove old timestamps outside the window
+  const recentTimestamps = timestamps.filter(t => now - t < RATE_LIMIT_WINDOW);
+
+  if (recentTimestamps.length >= MAX_REQUESTS) {
+    return false; // Rate limit exceeded
+  }
+
+  recentTimestamps.push(now);
+  rateLimitMap.set(identifier, recentTimestamps);
+  return true;
+}
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    console.log('Registration request received:', {
+      studentId: body.studentId,
+      email: body.email,
+      fullName: body.fullName
+    });
+
+    const {
+      studentId,
+      fullName,
+      faculty,
+      gender,
+      year,
+      referralSource,
+      interestedActivities,
+      transportation,
+      email,
+    } = body;
+
+    // Validate required fields
+    if (!studentId || !email || !fullName) {
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    // Rate limiting check
+    const identifier = studentId; // Use student ID as unique identifier
+    if (!checkRateLimit(identifier)) {
+      console.log('⏱️ Rate limit exceeded for:', identifier);
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait a moment and try again.' },
+        { status: 429 }
+      );
+    }
+
+    // 1. Submit to Google Form FIRST (so we don't lose data if other steps fail)
+    // Note: Google Form has 3 sections with page breaks - need to include pageHistory
+    try {
+      const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeSD3EX-743HNy2G9TYPY5BizQbP0X-tBItd6-lrjoKn0PRWw/formResponse';
+
+      const formData = new URLSearchParams();
+
+      // IMPORTANT: For multi-page forms, we need to indicate we visited all pages
+      // pageHistory tells Google Forms which pages we "visited" (0 = page 1, 1 = page 2, 2 = page 3)
+      formData.append('pageHistory', '0,1,2');
+
+      // Section 1: Email
+      formData.append('emailAddress', email);
+
+      // Section 2: Other information
+      formData.append('entry.966966796', studentId);
+      formData.append('entry.1596303195', fullName);
+      formData.append('entry.1164151850', faculty);
+      formData.append('entry.138725306', gender);
+      formData.append('entry.67458640', year);
+      formData.append('entry.104884751', referralSource);
+
+      // For checkbox fields, append each selection separately
+      if (Array.isArray(interestedActivities)) {
+        interestedActivities.forEach(activity => {
+          formData.append('entry.1000212024', activity);
+        });
+      }
+
+      formData.append('entry.1313112095', transportation);
+
+      // Section 3: PDPA Consent
+      formData.append('entry.756888526', 'ข้าพเจ้ายอมรับและยินยอม');
+
+      console.log('📝 Submitting to Google Form with data:', {
+        email: email,
+        studentId: studentId,
+        fullName: fullName,
+        faculty: faculty,
+        gender: gender,
+        year: year,
+        referralSource: referralSource,
+        interestedActivities: Array.isArray(interestedActivities) ? interestedActivities : [],
+        transportation: transportation,
+        pdpaConsent: 'ข้าพเจ้ายอมรับและยินยอม'
+      });
+
+      // Debug: Log the exact form data being sent
+      console.log('📤 Raw form data:', formData.toString());
+
+      await fetch(googleFormUrl, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      console.log('✅ Google Form submitted successfully (note: mode is no-cors, so we cannot verify response)');
+    } catch (googleFormError) {
+      console.error('❌ Google Form submission failed:', googleFormError);
+      // Don't fail completely - continue with other steps
+    }
+
+    // 2. Generate QR code
+    const qrData = `SHIVIDTIDPHEE-${studentId}-${Date.now()}`;
+    let qrCodeDataUrl = '';
+
+    try {
+      qrCodeDataUrl = await QRCode.toDataURL(qrData, {
+        width: 400,
+        margin: 2,
+        color: {
+          dark: '#8b6f47',
+          light: '#0a0a0f',
+        },
+      });
+      console.log('✅ QR Code generated');
+    } catch (qrError) {
+      console.error('❌ QR Code error:', qrError);
+    }
+
+    // 3. Insert into Supabase
+    try {
+      const { data, error } = await supabase
+        .from('registrations')
+        .insert([
+          {
+            student_id: studentId,
+            full_name: fullName,
+            email: email,
+            department: faculty,
+            gender: gender,
+            year: year,
+            referral_source: referralSource,
+            interested_activities: Array.isArray(interestedActivities) ? interestedActivities.join(', ') : '',
+            transportation: transportation,
+            qr_code: qrData,
+            attended: false,
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('❌ Supabase error:', error);
+        console.error('Supabase error details:', JSON.stringify(error, null, 2));
+        // Don't fail completely - data is already in Google Form
+      } else {
+        console.log('✅ Supabase insert successful', data);
+      }
+    } catch (supabaseError) {
+      console.error('❌ Supabase exception:', supabaseError);
+    }
+
+    // 4. Send confirmation email
+    // Note: Sends in background. Email errors are logged but don't block registration.
+    const emailHtml = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+              body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, Arial, sans-serif;
+                background-color: #f5f5f5;
+                color: #2d2d2d;
+                padding: 20px;
+                margin: 0;
+                line-height: 1.6;
+              }
+              .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff;
+                border-radius: 12px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+              }
+              .header {
+                text-align: center;
+                background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+                color: #ffffff;
+                font-size: 28px;
+                font-weight: bold;
+                padding: 30px 20px;
+                margin: 0;
+              }
+              .content {
+                background-color: #ffffff;
+                padding: 40px 30px;
+              }
+              .content h2 {
+                color: #ff6b35;
+                margin-top: 0;
+                font-size: 24px;
+              }
+              .content p {
+                color: #2d2d2d;
+                font-size: 16px;
+                margin: 15px 0;
+              }
+              .qr-code {
+                text-align: center;
+                margin: 30px 0;
+                background-color: #f9f9f9;
+                padding: 30px;
+                border-radius: 8px;
+                border: 2px solid #ff6b35;
+              }
+              .qr-code p {
+                margin: 10px 0;
+              }
+              .qr-code img {
+                max-width: 300px;
+                width: 100%;
+                height: auto;
+                display: block;
+                margin: 20px auto;
+                border-radius: 8px;
+              }
+              .info-box {
+                background-color: #fff3e0;
+                border-left: 4px solid #ff6b35;
+                border-radius: 5px;
+                padding: 20px;
+                margin: 25px 0;
+                color: #2d2d2d;
+              }
+              .info-box strong {
+                color: #d84315;
+                font-size: 16px;
+              }
+              .login-link {
+                display: inline-block;
+                background-color: #ff6b35;
+                color: #ffffff !important;
+                padding: 12px 30px;
+                text-decoration: none;
+                border-radius: 6px;
+                margin: 20px 0;
+                font-weight: bold;
+                font-size: 16px;
+              }
+              .footer {
+                text-align: center;
+                color: #666666;
+                padding: 20px 30px;
+                font-size: 14px;
+                background-color: #f9f9f9;
+                border-top: 1px solid #e0e0e0;
+              }
+              .footer a {
+                color: #ff6b35;
+                text-decoration: none;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <div class="header">🎃 SHIVIDTIDPHEE 2025 🎃</div>
+              <div class="content">
+                <h2>สวัสดีคุณ ${fullName}!</h2>
+                <p>ขอบคุณที่ลงทะเบียนเข้าร่วมงาน SHIVIDTIDPHEE 2025 🎉</p>
+                <p>การลงทะเบียนของคุณเสร็จสมบูรณ์แล้ว คุณสามารถเข้าสู่ระบบด้วยรหัสนิสิตของคุณได้แล้ว!</p>
+
+                <div class="info-box">
+                  <strong>รหัสนิสิตของคุณ:</strong> ${studentId}<br/><br/>
+                  <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://shividtidphee.vercel.app'}/login" class="login-link">เข้าสู่ระบบที่นี่</a>
+                </div>
+
+                ${qrCodeDataUrl ? `
+                  <div class="qr-code">
+                    <p><strong style="color: #ff6b35; font-size: 18px;">QR Code สำหรับเช็คอิน</strong></p>
+                    <p style="color: #666666; font-size: 14px;">กรุณาแสดง QR Code นี้เมื่อเข้างาน</p>
+                    <img src="cid:qrcode" alt="QR Code สำหรับเช็คอิน" />
+                  </div>
+                ` : ''}
+
+                <p style="color: #2d2d2d; font-size: 16px;">เราหวังว่าจะได้พบคุณในงาน! 👻</p>
+              </div>
+              <div class="footer">
+                <p>ติดตามข่าวสารเพิ่มเติมได้ที่<br/>
+                Instagram: <a href="https://instagram.com/shividtidphee" target="_blank">@shividtidphee</a></p>
+                <p style="font-size: 12px; color: #999999; margin-top: 15px;">
+                  คณะพาณิชยศาสตร์และการบัญชี X คณะวิศวกรรมศาสตร์
+                </p>
+              </div>
+            </div>
+          </body>
+        </html>
+      `;
+
+    // Send email in background (don't block the response)
+    sendEmail({
+      to: email,
+      subject: 'ยืนยันการลงทะเบียน SHIVIDTIDPHEE 2025',
+      html: emailHtml,
+      attachments: qrCodeDataUrl ? [{
+        filename: 'qrcode.png',
+        content: qrCodeDataUrl.split(',')[1],
+        cid: 'qrcode',
+        encoding: 'base64'
+      }] : undefined,
+    }).then(result => {
+      if (result.success) {
+        console.log('✅ Email sent successfully');
+      } else {
+        console.error('❌ Email failed to send:', result.error);
+      }
+    }).catch(err => {
+      console.error('❌ Email exception:', err);
+    });
+
+    console.log('✅ Registration completed successfully (email sending in background)');
+    return NextResponse.json({
+      success: true,
+      message: 'Registration completed successfully',
+      qr_code: qrData
+    });
+
+  } catch (error) {
+    console.error('❌ Registration error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    );
+  }
+}
