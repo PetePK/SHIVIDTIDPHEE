@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import LoadingScreen from '@/components/LoadingScreen';
+import { useGlobalImagePreloader } from '@/hooks/useImagePreloader';
 
 function LoginForm() {
   const router = useRouter();
@@ -11,6 +12,9 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+
+  // Preload all images in background
+  useGlobalImagePreloader();
 
   useEffect(() => {
     // Check if redirected from successful registration

@@ -22,7 +22,6 @@ export default function MenuPage() {
   const router = useRouter();
   const [userData, setUserData] = useState<any>(null);
   const [navigating, setNavigating] = useState(false);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
 
   useEffect(() => {
     // Check if user is logged in
@@ -36,12 +35,6 @@ export default function MenuPage() {
 
     const data = JSON.parse(userDataStr);
     setUserData(data);
-
-    // Preload ghost image
-    const ghostImage = data.ghost_result ? ghostImages[data.ghost_result] : defaultGhostImage;
-    const img = document.createElement('img');
-    img.onload = () => setImagesLoaded(true);
-    img.src = ghostImage;
   }, [router]);
 
   const handleLogout = () => {
@@ -56,7 +49,7 @@ export default function MenuPage() {
     router.push(path);
   };
 
-  if (!userData || !imagesLoaded) {
+  if (!userData) {
     return <LoadingScreen message="กำลังโหลด..." />;
   }
 
