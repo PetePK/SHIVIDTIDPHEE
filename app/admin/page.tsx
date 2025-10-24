@@ -513,12 +513,12 @@ function QRScanner() {
     }
 
     // Define Constraints
-    const mobileConstraints = {
+    const mobileConstraints: MediaStreamConstraints = {
       video: { facingMode: { exact: "environment" } }, // Back camera for mobile
       audio: false
     };
 
-    const desktopConstraints = {
+    const desktopConstraints: MediaStreamConstraints = {
       video: {
         width: { ideal: 1280 },
         height: { ideal: 720 }
@@ -527,7 +527,7 @@ function QRScanner() {
     };
 
     // Simple check to see if we're likely on a desktop/notebook
-    let constraints = mobileConstraints;
+    let constraints: MediaStreamConstraints = mobileConstraints;
     if (!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
       console.log("Desktop/Notebook detected, using standard camera.");
       constraints = desktopConstraints;
@@ -544,9 +544,9 @@ function QRScanner() {
       setMediaStream(stream);
       setScanning(true);
 
-    } catch (err) {
+    } catch (err: any) {
       // Handle Failure (e.g., no back camera on mobile)
-      console.warn(`Failed to get primary camera (${err.name}): ${err.message}`);
+      console.warn(`Failed to get primary camera (${err?.name}): ${err?.message}`);
 
       if (constraints === mobileConstraints) {
         console.log("Back camera unavailable, trying front camera...");
@@ -555,7 +555,7 @@ function QRScanner() {
           console.log("Successfully got stream with fallback constraints.");
           setMediaStream(stream);
           setScanning(true);
-        } catch (fallbackErr) {
+        } catch (fallbackErr: any) {
           handleCameraError(fallbackErr);
           return;
         }
