@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import LoadingScreen from '@/components/LoadingScreen';
+import Sponsors from '@/components/Sponsors';
 
 // Ghost image mapping - All 7 ghosts
 const ghostImages: Record<string, string> = {
@@ -179,6 +180,11 @@ export default function MenuPage() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Sponsors Section */}
+        <div className="shrink-0 w-full max-w-[340px] sm:max-w-[400px] md:max-w-[500px] mt-4 sm:mt-6">
+          <Sponsors />
         </div>
       </div>
     </div>

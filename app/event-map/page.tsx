@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Sponsors from '@/components/Sponsors';
 
 export default function EventMapPage() {
   const router = useRouter();
@@ -68,6 +69,11 @@ export default function EventMapPage() {
                     กรุณาใส่รูปภาพแผนที่ในโฟลเดอร์ /public
                   </span>
                 </p>
+              </div>
+
+              {/* Sponsors Section */}
+              <div className="mt-6 sm:mt-8">
+                <Sponsors />
               </div>
             </div>
           </div>

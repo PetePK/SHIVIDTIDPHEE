@@ -1,15 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(xargs -I {} mv {} q1.png)",
+      "Bash(node optimize-questions.js)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Read(//c/Users/petek/AppData/Local/npm-cache/_logs/**)",
+      "Bash(npm cache clean:*)",
+      "Bash(pnpm install)",
+      "Bash(node optimize-sponsors.js)",
+      "Bash(node replace-sponsors.js)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npm install:*)",
-      "Bash(pnpm add:*)",
-      "Bash(node optimize-images.js)",
-      "Bash(node replace-images.js)",
       "Bash(git push:*)",
-      "Bash(node optimize-more.js)"
+      "Bash(npm run build)"
     ],
     "deny": [],
     "ask": []

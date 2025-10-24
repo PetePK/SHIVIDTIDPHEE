@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import LoadingScreen from '@/components/LoadingScreen';
+import Sponsors from '@/components/Sponsors';
 import { useGlobalImagePreloader } from '@/hooks/useImagePreloader';
 
 function LoginForm() {
@@ -165,6 +166,11 @@ export default function Home() {
         }>
           <LoginForm />
         </Suspense>
+
+        {/* Sponsors Section */}
+        <div className="mt-8 sm:mt-10 md:mt-12">
+          <Sponsors />
+        </div>
       </div>
     </main>
   );

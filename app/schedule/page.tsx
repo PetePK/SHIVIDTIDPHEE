@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Sponsors from '@/components/Sponsors';
 
 export default function SchedulePage() {
   const router = useRouter();
@@ -88,6 +89,11 @@ export default function SchedulePage() {
                     </p>
                   </div>
                 </div>
+              </div>
+
+              {/* Sponsors Section */}
+              <div className="mt-6 sm:mt-8">
+                <Sponsors />
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import jsQR from 'jsqr';
 import BackButton from '@/components/BackButton';
+import Sponsors from '@/components/Sponsors';
 
 type Registration = {
   id: string;
@@ -812,6 +813,13 @@ function QRScanner() {
             </div>
           </div>
         )}
+
+        {/* Sponsors Section - Mobile (fixed at bottom) */}
+        {!scanning && !mediaStream && (
+          <div className="fixed bottom-0 left-0 right-0 bg-halloween-dark border-t-2 border-halloween-orange p-4">
+            <Sponsors title="" />
+          </div>
+        )}
       </div>
     );
   }
@@ -942,6 +950,11 @@ function QRScanner() {
           </div>
         </div>
       )}
+
+      {/* Sponsors Section - Desktop */}
+      <div className="mt-6 w-full">
+        <Sponsors />
+      </div>
     </div>
   );
 }
