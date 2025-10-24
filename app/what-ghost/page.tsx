@@ -461,12 +461,12 @@ export default function WhatGhostPage() {
                         <Image
                           src={questions[currentQuestion].image}
                           alt={questions[currentQuestion].q}
-                          width={564}
-                          height={360}
-                          sizes="(max-width: 640px) 100vw, 564px"
+                          width={700}
+                          height={700}
+                          sizes="(max-width: 640px) 100vw, 700px"
                           className="rounded-lg w-full max-h-40 sm:max-h-64 object-contain"
                           priority={currentQuestion === 0}
-                          quality={85}
+                          quality={75}
                         />
                       </div>
                     )}
