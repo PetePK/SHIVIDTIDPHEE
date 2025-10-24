@@ -25,6 +25,7 @@ export default function WhatGhostPage() {
   const [navigating, setNavigating] = useState(false);
   const [loadingQuestion, setLoadingQuestion] = useState(false);
   const [loadingResult, setLoadingResult] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const questions: Array<{
     q: string;
@@ -197,6 +198,25 @@ export default function WhatGhostPage() {
     }
     setIsLoggedIn(true);
   }, [router]);
+
+  // Wait for current question image to load before showing content
+  useEffect(() => {
+    setImageLoaded(false);
+
+    const currentImageSrc = questions[currentQuestion].image;
+    if (currentImageSrc) {
+      const img = new window.Image();
+      img.onload = () => {
+        setImageLoaded(true);
+      };
+      img.onerror = () => {
+        setImageLoaded(true); // Show content even if image fails to load
+      };
+      img.src = currentImageSrc;
+    } else {
+      setImageLoaded(true); // No image, show content immediately
+    }
+  }, [currentQuestion]);
 
   // Preload next question image
   useEffect(() => {
@@ -422,11 +442,13 @@ export default function WhatGhostPage() {
             ) : (
               // Question View
               <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-3 sm:p-5">
-                {loadingQuestion ? (
+                {loadingQuestion || !imageLoaded ? (
                   // Loading animation within quiz card
                   <div className="flex flex-col items-center justify-center py-12 sm:py-20">
                     <div className="animate-spin h-12 w-12 sm:h-16 sm:w-16 border-4 border-halloween-orange border-t-transparent rounded-full"></div>
-                    <p className="mt-4 text-halloween-cream text-sm sm:text-lg">กำลังโหลดคำถามถัดไป...</p>
+                    <p className="mt-4 text-halloween-cream text-sm sm:text-lg">
+                      {loadingQuestion ? 'กำลังโหลดคำถามถัดไป...' : 'กำลังโหลดรูปภาพ...'}
+                    </p>
                   </div>
                 ) : (
                   <>
