@@ -232,6 +232,19 @@ function AttendanceTable() {
   };
 
   const toggleAttendance = async (id: string, currentStatus: boolean) => {
+    // Optimistic update - update UI immediately
+    setRegistrations((prev) =>
+      prev.map((reg) =>
+        reg.id === id
+          ? {
+              ...reg,
+              attended: !currentStatus,
+              attended_at: !currentStatus ? new Date().toISOString() : null,
+            }
+          : reg
+      )
+    );
+
     try {
       const { error } = await supabase
         .from('registrations')
@@ -241,8 +254,21 @@ function AttendanceTable() {
         })
         .eq('id', id);
 
-      if (error) throw error;
-      // No need to refetch - real-time subscription will update automatically
+      if (error) {
+        // Revert optimistic update on error
+        setRegistrations((prev) =>
+          prev.map((reg) =>
+            reg.id === id
+              ? {
+                  ...reg,
+                  attended: currentStatus,
+                  attended_at: currentStatus ? reg.attended_at : null,
+                }
+              : reg
+          )
+        );
+        throw error;
+      }
     } catch (error) {
       console.error('Error updating attendance:', error);
     }
