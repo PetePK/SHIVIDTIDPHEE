@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import jsQR from 'jsqr';
 import BackButton from '@/components/BackButton';
 
 type Registration = {
@@ -63,18 +63,20 @@ export default function AdminPage() {
           </div>
 
           <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-8">
-            <form onSubmit={handleLogin} className="space-y-6">
+            <form onSubmit={handleLogin} className="space-y-6" suppressHydrationWarning>
               <div>
                 <label className="block text-halloween-cream font-bold mb-2">
                   รหัสผ่าน
                 </label>
                 <input
+                  key="admin-password-input"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-halloween-dark border-2 border-halloween-purple rounded px-4 py-3 text-halloween-cream focus:border-halloween-orange focus:outline-none"
                   placeholder="กรอกรหัสผ่าน"
                   required
+                  suppressHydrationWarning
                 />
               </div>
 
@@ -99,41 +101,36 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-halloween-dark">
-      {/* Header */}
-      <div className="bg-halloween-charcoal border-b-2 border-halloween-orange">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-halloween-orange">
-            Admin Dashboard - SHIVIDTIDPHEE 2025
-          </h1>
-          <button
-            onClick={() => setIsAuthenticated(false)}
-            className="bg-halloween-red hover:bg-halloween-orange text-halloween-cream px-4 py-2 rounded transition-colors"
-          >
-            ออกจากระบบ
-          </button>
-        </div>
-      </div>
-
-      {/* Tabs */}
+      {/* Tabs and Logout Button */}
       <div className="bg-halloween-charcoal border-b border-halloween-purple">
         <div className="container mx-auto px-4">
-          <div className="flex gap-2">
-            {[
-              { id: 'attendance' as TabType, label: 'Attendance Table' },
-              { id: 'scanner' as TabType, label: 'QR Scanner' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-4 font-bold transition-colors ${
-                  activeTab === tab.id
-                    ? 'text-halloween-orange border-b-4 border-halloween-orange'
-                    : 'text-halloween-gray hover:text-halloween-bone'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2">
+              {[
+                { id: 'attendance' as TabType, label: 'Attendance Table' },
+                { id: 'scanner' as TabType, label: 'QR Scanner' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-6 py-4 font-bold transition-colors ${
+                    activeTab === tab.id
+                      ? 'text-halloween-orange border-b-4 border-halloween-orange'
+                      : 'text-halloween-gray hover:text-halloween-bone'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsAuthenticated(false)}
+              className="bg-halloween-red hover:bg-halloween-orange text-halloween-cream px-4 py-2 rounded transition-colors"
+            >
+              ออกจากระบบ
+            </button>
           </div>
         </div>
       </div>
@@ -154,6 +151,7 @@ function AttendanceTable() {
   const [hiddenColumns, setHiddenColumns] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 50;
 
   useEffect(() => {
@@ -187,24 +185,40 @@ function AttendanceTable() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [currentPage]);
+  }, [currentPage, searchQuery]);
 
   const fetchRegistrations = async () => {
     try {
-      // Get total count
-      const { count } = await supabase
-        .from('registrations')
-        .select('*', { count: 'exact', head: true });
+      let query = supabase.from('registrations').select('*', { count: 'exact' });
 
+      // Apply search filter if exists
+      if (searchQuery.trim()) {
+        query = query.ilike('student_id', `%${searchQuery.trim()}%`);
+      }
+
+      // Get total count with filter
+      const { count } = await query;
       setTotalCount(count || 0);
+
+      // Reset to page 1 if search changes and current page is out of bounds
+      const maxPage = Math.ceil((count || 0) / itemsPerPage);
+      if (currentPage > maxPage && maxPage > 0) {
+        setCurrentPage(1);
+        return;
+      }
 
       // Fetch paginated data
       const from = (currentPage - 1) * itemsPerPage;
       const to = from + itemsPerPage - 1;
 
-      const { data, error } = await supabase
-        .from('registrations')
-        .select('*')
+      let dataQuery = supabase.from('registrations').select('*');
+
+      // Apply search filter
+      if (searchQuery.trim()) {
+        dataQuery = dataQuery.ilike('student_id', `%${searchQuery.trim()}%`);
+      }
+
+      const { data, error } = await dataQuery
         .order('created_at', { ascending: false })
         .range(from, to);
 
@@ -263,26 +277,35 @@ function AttendanceTable() {
 
   return (
     <div>
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-halloween-orange">
-          ผู้ลงทะเบียนทั้งหมด: {totalCount} คน
-        </h2>
-        <div className="flex gap-2">
-          <span className="text-halloween-cream">แสดง/ซ่อนคอลัมน์:</span>
-          {columns.map((col) => (
+      <div className="mb-6">
+        {/* Search Input */}
+        <div className="flex items-center gap-4">
+          <div className="flex-1 max-w-md">
+            <input
+              key="search-student-id"
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1); // Reset to first page on search
+              }}
+              placeholder="ค้นหารหัสนิสิต..."
+              className="w-full bg-halloween-dark border-2 border-halloween-purple rounded px-4 py-2 text-halloween-cream focus:border-halloween-orange focus:outline-none"
+              suppressHydrationWarning
+            />
+          </div>
+          {searchQuery && (
             <button
               type="button"
-              key={col.id}
-              onClick={() => toggleColumn(col.id)}
-              className={`px-3 py-1 rounded text-sm ${
-                hiddenColumns.has(col.id)
-                  ? 'bg-halloween-gray text-halloween-dark'
-                  : 'bg-halloween-orange text-halloween-dark'
-              }`}
+              onClick={() => {
+                setSearchQuery('');
+                setCurrentPage(1);
+              }}
+              className="bg-halloween-gray hover:bg-halloween-red text-halloween-dark px-4 py-2 rounded transition-colors font-bold"
             >
-              {col.label}
+              ล้างการค้นหา
             </button>
-          ))}
+          )}
         </div>
       </div>
 
@@ -379,30 +402,208 @@ function AttendanceTable() {
 
 // QR Scanner Component
 function QRScanner() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [scanning, setScanning] = useState(false);
-  const [result, setResult] = useState<{ success: boolean; message: string } | null>(null);
+  const [result, setResult] = useState<{ success: boolean; message: string; name?: string } | null>(null);
   const [processing, setProcessing] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+  const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
+  const [recentAttendees, setRecentAttendees] = useState<Registration[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+  const scanIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Detect if mobile device
   useEffect(() => {
-    if (scanning) {
-      const scanner = new Html5QrcodeScanner(
-        'qr-reader',
-        {
-          fps: 10,
-          qrbox: { width: 250, height: 250 },
-        },
-        false
-      );
+    const checkMobile = () => {
+      setIsMobile(/Mobi|Android|iPhone/i.test(navigator.userAgent));
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-      scanner.render(onScanSuccess, onScanError);
+  // Subscribe to real-time attendance updates
+  useEffect(() => {
+    // Fetch initial recent attendees
+    const fetchRecentAttendees = async () => {
+      const { data } = await supabase
+        .from('registrations')
+        .select('*')
+        .eq('attended', true)
+        .order('attended_at', { ascending: false })
+        .limit(20);
 
-      return () => {
-        scanner.clear();
-      };
+      if (data) setRecentAttendees(data);
+    };
+
+    fetchRecentAttendees();
+
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel('scanner-attendance')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'registrations', filter: 'attended=eq.true' },
+        (payload) => {
+          setRecentAttendees((prev) => {
+            const newAttendee = payload.new as Registration;
+            // Add to top and keep only 20
+            return [newAttendee, ...prev.filter(a => a.id !== newAttendee.id)].slice(0, 20);
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  // Request camera permission and start scanning
+  const startCamera = async () => {
+    setCameraError(null);
+
+    // Stop any existing stream
+    if (mediaStream) {
+      stopCamera();
     }
-  }, [scanning]);
 
-  const onScanSuccess = async (decodedText: string) => {
+    // Check if page is served over HTTPS (required for getUserMedia on iOS)
+    const isSecureContext = window.isSecureContext || window.location.protocol === 'https:';
+
+    if (!isSecureContext && /iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      setCameraError('iOS Safari ต้องใช้ HTTPS เพื่อเข้าถึงกล้อง กรุณาเปิดผ่าน https://');
+      console.error('getUserMedia requires HTTPS on iOS Safari. Current URL:', window.location.href);
+      return;
+    }
+
+    // Check if mediaDevices API is supported
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setCameraError(`กล้องไม่รองรับในเบราว์เซอร์นี้ ${!isSecureContext ? '(ต้องใช้ HTTPS)' : ''}`);
+      console.error('getUserMedia not supported. isSecureContext:', isSecureContext);
+      return;
+    }
+
+    // Define Constraints
+    const mobileConstraints = {
+      video: { facingMode: { exact: "environment" } }, // Back camera for mobile
+      audio: false
+    };
+
+    const desktopConstraints = {
+      video: {
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: false
+    };
+
+    // Simple check to see if we're likely on a desktop/notebook
+    let constraints = mobileConstraints;
+    if (!/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      console.log("Desktop/Notebook detected, using standard camera.");
+      constraints = desktopConstraints;
+    } else {
+      console.log("Mobile device detected, attempting back camera.");
+    }
+
+    console.log('Requesting camera access...');
+
+    try {
+      // Try to get the stream with primary constraints
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      console.log("Successfully got stream with primary constraints.");
+      setMediaStream(stream);
+      setScanning(true);
+
+    } catch (err) {
+      // Handle Failure (e.g., no back camera on mobile)
+      console.warn(`Failed to get primary camera (${err.name}): ${err.message}`);
+
+      if (constraints === mobileConstraints) {
+        console.log("Back camera unavailable, trying front camera...");
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia(desktopConstraints);
+          console.log("Successfully got stream with fallback constraints.");
+          setMediaStream(stream);
+          setScanning(true);
+        } catch (fallbackErr) {
+          handleCameraError(fallbackErr);
+          return;
+        }
+      } else {
+        handleCameraError(err);
+        return;
+      }
+    }
+  };
+
+  // Handle camera errors
+  const handleCameraError = (err: any) => {
+    let errorMessage = 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ';
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      errorMessage = 'กรุณาอนุญาตการเข้าถึงกล้องจากเบราว์เซอร์';
+    } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+      errorMessage = 'ไม่พบกล้อง';
+    } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+      errorMessage = 'กล้องถูกใช้งานโดยแอปพลิเคชันอื่น';
+    } else if (err.name === 'OverconstrainedError' || err.name === 'ConstraintNotSatisfiedError') {
+      errorMessage = 'ไม่พบกล้องที่ตรงกับความต้องการ';
+    }
+
+    console.error(`getUserMedia Error: ${err.name}`, err);
+    setCameraError(errorMessage);
+  };
+
+  // Stop camera and cleanup
+  const stopCamera = () => {
+    if (scanIntervalRef.current) {
+      clearInterval(scanIntervalRef.current);
+      scanIntervalRef.current = null;
+    }
+
+    if (mediaStream) {
+      mediaStream.getTracks().forEach((track) => track.stop());
+      setMediaStream(null);
+    }
+
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+
+    setScanning(false);
+  };
+
+  // Scan QR code from video feed
+  const startQRScanning = () => {
+    if (scanIntervalRef.current) {
+      clearInterval(scanIntervalRef.current);
+    }
+
+    scanIntervalRef.current = setInterval(() => {
+      if (videoRef.current && canvasRef.current && !processing) {
+        const video = videoRef.current;
+        const canvas = canvasRef.current;
+        const context = canvas.getContext('2d');
+
+        if (context && video.readyState === video.HAVE_ENOUGH_DATA) {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+          const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+          if (code) {
+            processQRCode(code.data);
+          }
+        }
+      }
+    }, 500); // Scan every 500ms
+  };
+
+  const processQRCode = async (decodedText: string) => {
     // Prevent processing multiple scans at once
     if (processing) return;
 
@@ -412,7 +613,7 @@ function QRScanner() {
       // Optimistic update: Update directly using QR code (indexed column)
       const { data, error } = await supabase
         .from('registrations')
-        .select('id, full_name, attended')
+        .select('*')
         .eq('qr_code', decodedText)
         .single();
 
@@ -445,16 +646,34 @@ function QRScanner() {
 
       if (updateError) throw updateError;
 
-      setResult({
-        success: true,
-        message: `เช็คอินสำเร็จ! ${data.full_name}`,
+      // Immediately update the recent attendees list with full data
+      const updatedAttendee: Registration = {
+        ...data,
+        attended: true,
+        attended_at: new Date().toISOString()
+      };
+
+      // Optimistically update the list - add to top immediately
+      setRecentAttendees((prev) => {
+        return [updatedAttendee, ...prev.filter(a => a.id !== updatedAttendee.id)].slice(0, 20);
       });
 
-      // Clear result and allow next scan after 2 seconds
-      setTimeout(() => {
-        setResult(null);
+      setResult({
+        success: true,
+        message: `เช็คอินสำเร็จ!`,
+        name: data.full_name
+      });
+
+      // Clear result and allow next scan after 3 seconds (mobile gets confirm button)
+      if (!isMobile) {
+        setTimeout(() => {
+          setResult(null);
+          setProcessing(false);
+        }, 3000);
+      } else {
+        // Mobile waits for user action
         setProcessing(false);
-      }, 2000);
+      }
     } catch (error) {
       console.error('Error processing QR code:', error);
       setResult({ success: false, message: 'เกิดข้อผิดพลาด' });
@@ -463,53 +682,238 @@ function QRScanner() {
     }
   };
 
-  const onScanError = () => {
-    // Ignore scan errors (they happen constantly while scanning)
-  };
+  // Effect to handle setting the video source when the stream changes
+  useEffect(() => {
+    if (mediaStream && videoRef.current) {
+      videoRef.current.srcObject = mediaStream;
+      videoRef.current.muted = true;
+      videoRef.current.play().then(() => {
+        console.log('Video playing successfully');
+        // Start QR scanning after video is ready
+        setTimeout(() => {
+          startQRScanning();
+        }, 500);
+      }).catch((err) => {
+        console.error('Video play error:', err);
+        setCameraError('ไม่สามารถเริ่มวิดีโอได้');
+      });
+    }
+  }, [mediaStream]);
 
-  return (
-    <div className="max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold text-halloween-orange mb-6 text-center">
-        สแกน QR Code เพื่อเช็คอิน
-      </h2>
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopCamera();
+    };
+  }, []);
 
-      {!scanning ? (
-        <button
-          type="button"
-          onClick={() => setScanning(true)}
-          className="w-full bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 rounded-lg transition-colors"
-        >
-          เปิดกล้อง
-        </button>
-      ) : (
-        <>
-          <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-4 mb-4">
-            <div id="qr-reader"></div>
-            {processing && (
-              <div className="mt-4 text-center text-halloween-orange font-bold">
-                กำลังประมวลผล...
+  // MOBILE LAYOUT
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 bg-halloween-dark">
+        {!scanning && !mediaStream ? (
+          <div className="flex flex-col items-center justify-center h-full p-4">
+            <h2 className="text-2xl font-bold text-halloween-orange mb-6 text-center">
+              สแกน QR Code เพื่อเช็คอิน
+            </h2>
+            <button
+              type="button"
+              onClick={startCamera}
+              className="w-full max-w-sm bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 rounded-lg transition-colors"
+            >
+              เปิดกล้อง
+            </button>
+            {cameraError && (
+              <div className="mt-4 p-4 bg-halloween-red border border-halloween-orange rounded-lg text-halloween-cream text-center max-w-sm">
+                {cameraError}
               </div>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => setScanning(false)}
-            className="w-full bg-halloween-gray hover:bg-halloween-blue text-halloween-dark font-bold py-3 rounded-lg transition-colors"
-          >
-            ปิดกล้อง
-          </button>
-        </>
-      )}
+        ) : (
+          <div className="relative w-full h-full">
+            <video
+              ref={videoRef}
+              className="w-full h-full object-cover"
+              playsInline
+              muted
+              autoPlay
+              style={{ transform: 'scaleX(-1)' }}
+            />
+            <canvas ref={canvasRef} className="hidden" />
 
+            {/* Scanning overlay */}
+            {scanning && !result && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-64 h-64 border-4 border-halloween-orange rounded-lg"></div>
+              </div>
+            )}
+
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={stopCamera}
+              className="absolute top-4 right-4 bg-halloween-red hover:bg-halloween-orange text-halloween-cream px-4 py-2 rounded-lg font-bold shadow-lg"
+            >
+              ปิดกล้อง
+            </button>
+          </div>
+        )}
+
+        {/* Mobile Success/Error popup with confirmation */}
+        {result && (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+            <div
+              className={`w-full max-w-sm p-8 rounded-lg text-center shadow-2xl border-4 ${
+                result.success
+                  ? 'bg-green-600 text-white border-green-400'
+                  : 'bg-halloween-red text-halloween-cream border-halloween-orange'
+              }`}
+            >
+              <div className="text-3xl font-bold mb-2">{result.message}</div>
+              {result.name && (
+                <div className="text-xl mb-6">{result.name}</div>
+              )}
+              <button
+                type="button"
+                onClick={() => {
+                  setResult(null);
+                  setProcessing(false);
+                }}
+                className="w-full bg-white hover:bg-gray-100 text-gray-900 font-bold py-3 rounded-lg transition-colors"
+              >
+                ตกลง
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // DESKTOP/TABLET LAYOUT
+  return (
+    <div className="flex gap-4 h-[calc(100vh-200px)]">
+      {/* Camera Section - 2/3 width */}
+      <div className="w-2/3">
+        <h2 className="text-2xl font-bold text-halloween-orange mb-4">
+          สแกน QR Code เพื่อเช็คอิน
+        </h2>
+
+        {!scanning && !mediaStream ? (
+          <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-8 flex flex-col items-center justify-center h-full">
+            <button
+              type="button"
+              onClick={startCamera}
+              className="bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 px-8 rounded-lg transition-colors"
+            >
+              เปิดกล้อง
+            </button>
+            {cameraError && (
+              <div className="mt-4 p-4 bg-halloween-red border border-halloween-orange rounded-lg text-halloween-cream text-center max-w-md">
+                {cameraError}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-4 h-full flex flex-col">
+            <div className="relative bg-black rounded-lg overflow-hidden flex-1">
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover rounded-lg"
+                playsInline
+                muted
+                autoPlay
+                style={{ transform: 'scaleX(-1)' }}
+              />
+              <canvas ref={canvasRef} className="hidden" />
+
+              {/* Scanning overlay */}
+              {scanning && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-64 h-64 border-4 border-halloween-orange rounded-lg"></div>
+                </div>
+              )}
+
+              {!scanning && mediaStream && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                  <div className="text-halloween-orange font-bold text-xl">
+                    กำลังเริ่มกล้อง...
+                  </div>
+                </div>
+              )}
+
+              {processing && (
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-halloween-orange text-halloween-dark px-6 py-2 rounded-lg font-bold">
+                  กำลังประมวลผล...
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={stopCamera}
+              className="mt-4 w-full bg-halloween-gray hover:bg-halloween-blue text-halloween-dark font-bold py-3 rounded-lg transition-colors"
+            >
+              ปิดกล้อง
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Recent Attendees List - 1/3 width */}
+      <div className="w-1/3">
+        <h2 className="text-2xl font-bold text-halloween-orange mb-4">
+          ผู้เข้าร่วมล่าสุด ({recentAttendees.length})
+        </h2>
+        <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg h-full overflow-hidden flex flex-col">
+          <div className="flex-1 overflow-y-auto">
+            {recentAttendees.length === 0 ? (
+              <div className="p-8 text-center text-halloween-gray">
+                ยังไม่มีผู้เข้าร่วม
+              </div>
+            ) : (
+              <div className="divide-y divide-halloween-purple">
+                {recentAttendees.map((attendee, index) => (
+                  <div
+                    key={attendee.id}
+                    className={`p-4 hover:bg-halloween-dark transition-colors ${
+                      index === 0 ? 'bg-halloween-orange/10' : ''
+                    }`}
+                  >
+                    <div className="font-bold text-halloween-cream text-lg">
+                      {attendee.full_name}
+                    </div>
+                    <div className="text-halloween-gray text-sm mt-1">
+                      {attendee.student_id}
+                    </div>
+                    <div className="text-halloween-gray text-xs mt-1">
+                      {attendee.attended_at
+                        ? new Date(attendee.attended_at).toLocaleTimeString('th-TH')
+                        : '-'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Success notification (centered popup) */}
       {result && (
-        <div
-          className={`mt-6 p-6 rounded-lg text-center text-xl font-bold ${
-            result.success
-              ? 'bg-green-600 text-white'
-              : 'bg-halloween-red text-halloween-cream'
-          }`}
-        >
-          {result.message}
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+          <div
+            className={`max-w-md w-full mx-4 p-8 rounded-lg text-center shadow-2xl border-4 ${
+              result.success
+                ? 'bg-green-600 text-white border-green-400'
+                : 'bg-halloween-red text-halloween-cream border-halloween-orange'
+            }`}
+          >
+            <div className="text-3xl font-bold mb-2">{result.message}</div>
+            {result.name && (
+              <div className="text-2xl mt-2">{result.name}</div>
+            )}
+          </div>
         </div>
       )}
     </div>
