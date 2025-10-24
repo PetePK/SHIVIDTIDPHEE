@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(xargs -I {} mv {} q1.png)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)",
+      "Bash(pnpm add:*)",
+      "Bash(node optimize-images.js)",
+      "Bash(node replace-images.js)"
     ],
     "deny": [],
     "ask": []

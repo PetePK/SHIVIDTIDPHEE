@@ -98,17 +98,19 @@ export default function MenuPage() {
           </h1>
         </div>
 
-        {/* Ghost Display Section - Square 1:1 Ratio */}
+        {/* Ghost Display Section */}
         <div className="shrink-0 flex justify-center w-full">
-          <div className="w-full max-w-[240px] sm:max-w-[280px] md:max-w-[340px] lg:max-w-[340px] aspect-square bg-halloween-charcoal/90 border-2 border-halloween-orange rounded-lg flex flex-col items-center justify-center p-3 sm:p-4 md:p-6 lg:p-5">
+          <div className="w-full max-w-[240px] sm:max-w-[280px] md:max-w-[340px] lg:max-w-[340px] bg-halloween-charcoal/90 border-2 border-halloween-orange rounded-lg flex flex-col items-center justify-center p-3 sm:p-4 md:p-6 lg:p-5">
             {/* Ghost Image */}
-            <div className="flex-1 flex items-center justify-center mb-2 sm:mb-3">
+            <div className="w-full flex items-center justify-center mb-2 sm:mb-3 pt-2 sm:pt-3">
               <Image
                 src={userData.ghost_result ? ghostImages[userData.ghost_result] : defaultGhostImage}
                 alt={userData.ghost_result || 'Mystery Ghost'}
-                width={280}
-                height={280}
-                className="rounded-lg w-full h-auto object-contain"
+                width={200}
+                height={200}
+                className="rounded-lg w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 object-contain"
+                priority
+                quality={85}
               />
             </div>
 

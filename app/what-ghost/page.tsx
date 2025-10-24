@@ -357,6 +357,8 @@ export default function WhatGhostPage() {
                       width={200}
                       height={200}
                       className="rounded-lg w-32 h-32 sm:w-[200px] sm:h-[200px]"
+                      priority
+                      quality={85}
                     />
                   </div>
                 )}
@@ -435,6 +437,8 @@ export default function WhatGhostPage() {
                       height={360}
                       sizes="(max-width: 640px) 100vw, 564px"
                       className="rounded-lg w-full max-h-40 sm:max-h-64 object-contain"
+                      priority={currentQuestion === 0}
+                      quality={85}
                     />
                   </div>
                 )}
