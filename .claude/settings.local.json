@@ -15,7 +15,10 @@
       "Bash(npm run build)",
       "Bash(node fix-sponsors.js)",
       "Bash(node replace-sponsors-final.js)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(node:*)",
+      "Bash(for f in *.png.tmp)",
+      "Bash(do mv \"$f\" \"$f%.tmp\")"
     ],
     "deny": [],
     "ask": []
