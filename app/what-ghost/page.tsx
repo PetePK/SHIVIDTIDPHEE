@@ -26,15 +26,6 @@ export default function WhatGhostPage() {
   const [loadingQuestion, setLoadingQuestion] = useState(false);
   const [loadingResult, setLoadingResult] = useState(false);
 
-  useEffect(() => {
-    const studentId = localStorage.getItem('studentId');
-    if (!studentId) {
-      router.push('/');
-      return;
-    }
-    setIsLoggedIn(true);
-  }, [router]);
-
   const questions: Array<{
     q: string;
     image?: string;
@@ -197,6 +188,26 @@ export default function WhatGhostPage() {
       theme: 'คุณเป็นผู้นำโดยกำเนิด มีความมั่นใจและควบคุมสถานการณ์ได้อย่างเยี่ยม!',
     },
   };
+
+  useEffect(() => {
+    const studentId = localStorage.getItem('studentId');
+    if (!studentId) {
+      router.push('/');
+      return;
+    }
+    setIsLoggedIn(true);
+  }, [router]);
+
+  // Preload next question image
+  useEffect(() => {
+    if (currentQuestion < questions.length - 1) {
+      const nextImageSrc = questions[currentQuestion + 1].image;
+      if (nextImageSrc) {
+        const nextImage = new window.Image();
+        nextImage.src = nextImageSrc;
+      }
+    }
+  }, [currentQuestion]);
 
   const handleAnswer = async (value: string) => {
     const newAnswers = [...answers];
