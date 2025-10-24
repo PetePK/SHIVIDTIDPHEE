@@ -12,7 +12,10 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(npm run build)"
+      "Bash(npm run build)",
+      "Bash(node fix-sponsors.js)",
+      "Bash(node replace-sponsors-final.js)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
