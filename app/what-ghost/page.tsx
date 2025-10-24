@@ -23,6 +23,7 @@ export default function WhatGhostPage() {
   const [answers, setAnswers] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [navigating, setNavigating] = useState(false);
+  const [firstImageLoaded, setFirstImageLoaded] = useState(false);
 
   useEffect(() => {
     const studentId = localStorage.getItem('studentId');
@@ -31,6 +32,11 @@ export default function WhatGhostPage() {
       return;
     }
     setIsLoggedIn(true);
+
+    // Preload first question image
+    const img = document.createElement('img');
+    img.onload = () => setFirstImageLoaded(true);
+    img.src = '/questions/q1.png';
   }, [router]);
 
   const questions: Array<{
@@ -301,7 +307,7 @@ export default function WhatGhostPage() {
     router.push(path);
   };
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn || !firstImageLoaded) {
     return <LoadingScreen message="กำลังโหลด..." />;
   }
 
