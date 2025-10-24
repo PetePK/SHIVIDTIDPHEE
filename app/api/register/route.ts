@@ -293,7 +293,7 @@ export async function POST(request: Request) {
 
                 <div class="info-box">
                   <strong>รหัสนิสิตของคุณ:</strong> ${studentId}<br/><br/>
-                  <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://shividtidphee.vercel.app'}/login" class="login-link">เข้าสู่ระบบที่นี่</a>
+                  <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://shividtidphee.vercel.app'}" class="login-link">เข้าสู่ระบบที่นี่</a>
                 </div>
 
                 ${qrCodeDataUrl ? `

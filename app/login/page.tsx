@@ -28,7 +28,7 @@ export default function LoginPage() {
         // Store student ID in localStorage
         localStorage.setItem('studentId', studentId);
         localStorage.setItem('userData', JSON.stringify(data.user));
-        router.push('/dashboard');
+        router.push('/menu');
       } else {
         setError(data.error || 'ไม่พบรหัสนิสิตนี้ในระบบ');
       }
