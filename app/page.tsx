@@ -3,7 +3,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import LoadingScreen from '@/components/LoadingScreen';
-import Sponsors from '@/components/Sponsors';
 import { useGlobalImagePreloader } from '@/hooks/useImagePreloader';
 
 function LoginForm() {
@@ -110,6 +109,7 @@ function LoginForm() {
                 type="submit"
                 disabled={loading}
                 className="w-full bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-lg sm:text-xl py-3 sm:py-4 rounded-lg transition-colors disabled:opacity-50 active:scale-95"
+                suppressHydrationWarning
               >
                 Login
               </button>
@@ -125,6 +125,7 @@ function LoginForm() {
               type="button"
               onClick={handleRegister}
               className="w-full text-halloween-orange hover:text-halloween-red font-semibold text-sm sm:text-base transition-colors underline text-center"
+              suppressHydrationWarning
             >
               Sign up for SHIVIDTIDPHEE
             </button>
@@ -139,7 +140,7 @@ export default function Home() {
     <main className="gradient-background min-h-screen flex flex-col items-center justify-center px-4 py-8 sm:py-12">
       <div className="w-full max-w-4xl mx-auto">
         {/* Header Section */}
-        <header className="mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center px-2">
+        <header className="mb-4 sm:mb-6 md:mb-8 lg:mb-10 text-center px-2">
           <p className="text-xs sm:text-sm text-halloween-moon mb-2 tracking-wide sm:tracking-widest uppercase">
             VIDVAxBANSHI
           </p>
@@ -166,11 +167,6 @@ export default function Home() {
         }>
           <LoginForm />
         </Suspense>
-
-        {/* Sponsors Section */}
-        <div className="mt-8 sm:mt-10 md:mt-12">
-          <Sponsors />
-        </div>
       </div>
     </main>
   );

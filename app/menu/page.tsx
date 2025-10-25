@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import LoadingScreen from '@/components/LoadingScreen';
-import Sponsors from '@/components/Sponsors';
 
 // Ghost image mapping - All 7 ghosts
 const ghostImages: Record<string, string> = {
@@ -69,7 +68,9 @@ export default function MenuPage() {
       <div className="absolute inset-0 bg-black/40 pointer-events-none" aria-hidden="true"></div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 px-3 sm:px-4 md:px-6 py-12 sm:py-16 md:py-16 lg:py-8 overflow-hidden">
+      <div className="relative z-10 min-h-screen flex flex-col overflow-hidden">
+        {/* Main content with gaps */}
+        <div className="flex-1 flex flex-col items-center justify-center gap-3 sm:gap-4 md:gap-5 px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-10">
         {/* Logout Icon - Top Right (Scrolls with content) */}
         <div className="absolute top-3 right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 z-20">
           <button
@@ -94,14 +95,14 @@ export default function MenuPage() {
 
         {/* Header */}
         <div className="text-center shrink-0">
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-3xl font-bold text-white">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-3xl font-bold text-white">
             SHIVIDTIDPHEE
           </h1>
         </div>
 
         {/* Ghost Display Section */}
         <div className="shrink-0 flex justify-center w-full">
-          <div className="w-full max-w-[240px] sm:max-w-[280px] md:max-w-[340px] lg:max-w-[340px] bg-halloween-charcoal/90 border-2 border-halloween-orange rounded-lg flex flex-col items-center justify-center p-3 sm:p-4 md:p-6 lg:p-5">
+          <div className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[340px] bg-halloween-charcoal/90 border-2 border-halloween-orange rounded-lg flex flex-col items-center justify-center p-4 sm:p-5 md:p-6 lg:p-5">
             {/* Ghost Image */}
             <div className="w-full flex items-center justify-center mb-2 sm:mb-3 pt-2 sm:pt-3">
               <Image
@@ -109,7 +110,7 @@ export default function MenuPage() {
                 alt={userData.ghost_result || 'Mystery Ghost'}
                 width={200}
                 height={200}
-                className="rounded-lg w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 object-contain"
+                className="rounded-lg w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain"
                 priority
                 quality={85}
               />
@@ -118,13 +119,13 @@ export default function MenuPage() {
             {/* Ghost Name or Question */}
             {userData.ghost_result ? (
               <>
-                <p className="text-sm sm:text-base md:text-xl lg:text-xl font-bold text-halloween-orange mb-1.5 sm:mb-2 md:mb-3">
+                <p className="text-base sm:text-lg md:text-2xl lg:text-xl font-bold text-halloween-orange mb-2 sm:mb-3 md:mb-3">
                   {userData.ghost_result}
                 </p>
                 <button
                   type="button"
                   onClick={() => handleNavigate('/what-ghost')}
-                  className="bg-halloween-purple hover:bg-halloween-orange border-2 border-halloween-orange text-halloween-cream hover:text-halloween-dark font-bold text-[10px] sm:text-xs md:text-sm px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2 rounded-full transition-all active:scale-95 shadow-lg flex items-center gap-1.5 sm:gap-2"
+                  className="bg-halloween-purple hover:bg-halloween-orange border-2 border-halloween-orange text-halloween-cream hover:text-halloween-dark font-bold text-xs sm:text-sm md:text-base px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 rounded-full transition-all active:scale-95 shadow-lg flex items-center gap-1.5 sm:gap-2"
                 >
                   <span>👻</span>
                   <span>เล่นอีกครั้ง</span>
@@ -132,14 +133,14 @@ export default function MenuPage() {
               </>
             ) : (
               <>
-                <p className="text-xs sm:text-sm md:text-base text-white font-medium mb-1.5 sm:mb-2">
+                <p className="text-sm sm:text-base md:text-lg text-white font-medium mb-2 sm:mb-2.5">
                   What Ghost Am I?
                 </p>
                 {/* Button - Different style when not played yet */}
                 <button
                   type="button"
                   onClick={() => handleNavigate('/what-ghost')}
-                  className="bg-halloween-purple hover:bg-halloween-orange border-2 border-halloween-orange text-halloween-cream hover:text-halloween-dark font-bold text-[10px] sm:text-xs md:text-sm px-2.5 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2 rounded-full transition-all active:scale-95 shadow-lg flex items-center gap-1.5 sm:gap-2 relative"
+                  className="bg-halloween-purple hover:bg-halloween-orange border-2 border-halloween-orange text-halloween-cream hover:text-halloween-dark font-bold text-xs sm:text-sm md:text-base px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 rounded-full transition-all active:scale-95 shadow-lg flex items-center gap-1.5 sm:gap-2 relative"
                 >
                   {/* Notification Dot */}
                   <span className="absolute -top-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 bg-red-600 rounded-full"></span>
@@ -153,21 +154,21 @@ export default function MenuPage() {
 
         {/* Menu - Single Column Vertical */}
         <div className="shrink-0 flex justify-center w-full">
-          <div className="w-full max-w-[240px] sm:max-w-[280px] md:max-w-[340px] lg:max-w-[340px] space-y-1.5 sm:space-y-2">
+          <div className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[380px] lg:max-w-[340px] space-y-2 sm:space-y-2.5">
             {menuItems.map((item) => (
               <button
                 key={item.path}
                 onClick={() => handleNavigate(item.path)}
-                className="w-full bg-halloween-charcoal/90 hover:bg-halloween-orange/90 border-2 border-halloween-orange rounded-lg p-2 sm:p-3 md:p-4 lg:p-4 flex items-center gap-2 sm:gap-3 md:gap-4 transition-all active:scale-98 group"
+                className="w-full bg-halloween-charcoal/90 hover:bg-halloween-orange/90 border-2 border-halloween-orange rounded-lg p-3 sm:p-4 md:p-5 lg:p-4 flex items-center gap-3 sm:gap-4 md:gap-5 transition-all active:scale-98 group"
               >
-                <span className="text-xl sm:text-2xl md:text-3xl lg:text-3xl group-hover:scale-110 transition-transform shrink-0">
+                <span className="text-2xl sm:text-3xl md:text-4xl lg:text-3xl group-hover:scale-110 transition-transform shrink-0">
                   {item.icon}
                 </span>
-                <span className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-halloween-cream group-hover:text-halloween-dark text-left flex-1">
+                <span className="text-sm sm:text-base md:text-lg lg:text-lg font-bold text-halloween-cream group-hover:text-halloween-dark text-left flex-1">
                   {item.title}
                 </span>
                 <svg
-                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-halloween-orange group-hover:text-halloween-dark transition-colors shrink-0"
+                  className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-halloween-orange group-hover:text-halloween-dark transition-colors shrink-0"
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -181,10 +182,35 @@ export default function MenuPage() {
             ))}
           </div>
         </div>
+        </div>
 
-        {/* Sponsors Section */}
-        <div className="shrink-0 w-full max-w-[340px] sm:max-w-[400px] md:max-w-[500px] mt-4 sm:mt-6">
-          <Sponsors />
+        {/* Sponsors Section - Separate from gapped content */}
+        <div className="shrink-0 w-full">
+          <div className="bg-halloween-charcoal/70 border-t-2 border-halloween-orange py-2 px-0">
+            <p className="text-center text-halloween-orange font-bold text-xs mb-1.5">Our Sponsors</p>
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+              {[
+                { src: '/sponsors/cqk-hotpot-logo-2-copy.png', alt: 'CQK Hotpot' },
+                { src: '/sponsors/escaperoomlogo.png', alt: 'Escape Room' },
+                { src: '/sponsors/tri-petch-isuzu-sales-.png', alt: 'Tri Petch Isuzu Sales' },
+                { src: '/sponsors/img_0628.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7475.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7476.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7484.jpg', alt: 'Sponsor' },
+              ].map((sponsor, index) => (
+                <div key={index} className="w-[35px] h-[35px] sm:w-[40px] sm:h-[40px] md:w-[45px] md:h-[45px] flex items-center justify-center">
+                  <Image
+                    src={sponsor.src}
+                    alt={sponsor.alt}
+                    width={45}
+                    height={45}
+                    className="w-full h-full object-contain"
+                    quality={90}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

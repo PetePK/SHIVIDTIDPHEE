@@ -25,8 +25,11 @@ const nosifer = Nosifer({
 });
 
 export const metadata: Metadata = {
-  title: "Halloween Event 2025",
-  description: "University Halloween Event - Games, Schedule, and Registration",
+  title: "SHIVIDTIDPHEE 2025",
+  description: "VIDVAxBANSHI Halloween Event - Games, Schedule, and Registration",
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({

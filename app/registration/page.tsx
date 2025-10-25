@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 type FormData = {
   studentId: string;
@@ -189,16 +190,16 @@ export default function RegistrationPage() {
         </div>
       )}
 
-      <div className="w-full max-w-2xl mx-auto">
+      <div className="w-full max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto pb-8">
         {/* Step 1: Event Details */}
         {step === 1 && (
-          <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-6 sm:p-8">
-            <h1 className="text-3xl sm:text-4xl font-bold text-halloween-orange mb-5 sm:mb-6 text-center">
+          <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-6 sm:p-8 lg:p-10 xl:p-12">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-halloween-orange mb-5 sm:mb-6 lg:mb-8 text-center">
               SHIVIDTIDPHEE 2025
             </h1>
 
-            <div className="text-halloween-cream space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-              <p className="text-sm sm:text-base md:text-lg leading-relaxed">
+            <div className="text-halloween-cream space-y-3 sm:space-y-4 lg:space-y-5 mb-6 sm:mb-8 lg:mb-10">
+              <p className="text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed">
                 ครั้งแรกของ งานฮาโลวีนสุดหลอนแต่โคตรมันส์จาก{' '}
                 <span className="text-halloween-orange font-bold">
                   &quot;คณะพาณิชยศาสตร์และการบัญชี&quot;
@@ -209,30 +210,30 @@ export default function RegistrationPage() {
                 </span>
               </p>
 
-              <p className="text-sm sm:text-base md:text-lg leading-relaxed">
+              <p className="text-sm sm:text-base lg:text-lg xl:text-xl leading-relaxed">
                 เตรียมตัวให้พร้อม... เพราะความสนุกครั้งนี้มาพร้อมเสียงกรี๊ด ความหลอน
                 และเซอร์ไพรส์สุดขนหัวลุก! 💀✨
               </p>
 
-                <div className="flex items-start gap-2 mt-3 sm:mt-4 text-halloween-bone">
+                <div className="flex items-start gap-2 lg:gap-3 mt-3 sm:mt-4 lg:mt-5 text-halloween-bone">
                 <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 shrink-0 mt-0.5 text-halloween-orange"
+                    className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7 shrink-0 mt-0.5 text-halloween-orange"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                 </svg>
-                <p className="text-xs sm:text-sm md:text-base">
+                <p className="text-xs sm:text-sm lg:text-base xl:text-lg">
                   Larngear, Faculty of Engineering, Chulalongkorn University
                 </p>
               </div>
 
-              <div className="bg-halloween-dark p-4 sm:p-5 md:p-6 rounded-lg border border-halloween-purple mt-4 sm:mt-5 md:mt-6">
-                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-halloween-orange mb-3 sm:mb-4">
+              <div className="bg-halloween-dark p-4 sm:p-5 lg:p-6 xl:p-8 rounded-lg border border-halloween-purple mt-4 sm:mt-5 lg:mt-6">
+                <h2 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-halloween-orange mb-3 sm:mb-4 lg:mb-5">
                   🕸️ กิจกรรมที่คุณต้องลอง
                 </h2>
-                <ul className="space-y-2 text-xs sm:text-sm md:text-base text-halloween-bone">
+                <ul className="space-y-2 lg:space-y-3 text-xs sm:text-sm lg:text-base xl:text-lg text-halloween-bone">
                   <li>🎬 หนังกลางแปลงสุดหลอน</li>
                   <li>🏚️ บ้านผีสิงที่แค่เดินผ่านก็ใจสั่น</li>
                   <li>💃 โชว์สุดพิเศษ</li>
@@ -240,18 +241,18 @@ export default function RegistrationPage() {
                 </ul>
               </div>
 
-              <div className="mt-4 sm:mt-5 md:mt-6 text-center px-2">
-                <p className="text-xs sm:text-sm md:text-base text-halloween-gray mb-2">
+              <div className="mt-4 sm:mt-5 lg:mt-6 text-center px-2">
+                <p className="text-xs sm:text-sm lg:text-base xl:text-lg text-halloween-gray mb-2 lg:mb-3">
                   ติดตามรายละเอียดเพิ่มเติมได้ที่
                 </p>
                 <a
                   href="https://www.instagram.com/shividtidphee/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 text-sm sm:text-base md:text-lg text-halloween-orange font-bold hover:text-halloween-red transition-colors underline break-all"
+                  className="inline-flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg xl:text-xl text-halloween-orange font-bold hover:text-halloween-red transition-colors underline break-all"
                 >
                   <svg
-                    className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 shrink-0"
+                    className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 xl:w-7 xl:h-7 shrink-0"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
@@ -266,7 +267,7 @@ export default function RegistrationPage() {
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="w-full bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-lg sm:text-xl py-3 sm:py-4 rounded-lg transition-colors active:scale-95"
+              className="w-full bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-lg sm:text-xl lg:text-2xl xl:text-3xl py-3 sm:py-4 lg:py-5 xl:py-6 rounded-lg transition-colors active:scale-95"
             >
               ถัดไป
             </button>
@@ -574,6 +575,38 @@ export default function RegistrationPage() {
               >
                 ยืนยันการลงทะเบียน
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Sponsors Section - Only on Step 1 (Scrollable) */}
+        {step === 1 && (
+          <div className="mt-8">
+            <p className="text-center text-halloween-orange font-bold text-xs mb-3">Our Sponsors</p>
+            <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 overflow-x-auto pb-2">
+              {[
+                { src: '/sponsors/cqk-hotpot-logo-2-copy.png', alt: 'CQK Hotpot' },
+                { src: '/sponsors/escaperoomlogo.png', alt: 'Escape Room' },
+                { src: '/sponsors/tri-petch-isuzu-sales-.png', alt: 'Tri Petch Isuzu Sales' },
+                { src: '/sponsors/img_0628.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7475.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7476.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7484.jpg', alt: 'Sponsor' },
+              ].map((sponsor, index) => (
+                <div
+                  key={index}
+                  className="w-[50px] h-[50px] sm:w-[55px] sm:h-[55px] md:w-[60px] md:h-[60px] lg:w-[65px] lg:h-[65px] hover:scale-110 transition-transform flex items-center justify-center"
+                >
+                  <Image
+                    src={sponsor.src}
+                    alt={sponsor.alt}
+                    width={65}
+                    height={65}
+                    className="w-full h-full object-contain"
+                    quality={90}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         )}

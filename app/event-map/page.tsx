@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Sponsors from '@/components/Sponsors';
+import Image from 'next/image';
 
 export default function EventMapPage() {
   const router = useRouter();
@@ -31,7 +31,8 @@ export default function EventMapPage() {
       <div className="absolute inset-0 bg-black/60 pointer-events-none" aria-hidden="true"></div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col p-4 sm:p-6">
+      <div className="relative z-10 min-h-screen flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col p-4 sm:p-6">
         {/* Back Button */}
         <button
           onClick={() => router.push('/menu')}
@@ -61,20 +62,66 @@ export default function EventMapPage() {
                 Event Map
               </h2>
 
-              <div className="bg-halloween-dark rounded-lg p-6 sm:p-8 min-h-[300px] sm:min-h-[400px] flex items-center justify-center border-2 border-dashed border-halloween-purple">
-                <p className="text-halloween-gray text-center text-sm sm:text-base">
-                  [แผนที่งานจะแสดงที่นี่]
-                  <br />
-                  <span className="text-xs sm:text-sm">
-                    กรุณาใส่รูปภาพแผนที่ในโฟลเดอร์ /public
-                  </span>
-                </p>
-              </div>
+              <div className="bg-halloween-dark rounded-lg p-6 sm:p-8 border-2 border-halloween-purple">
+                <div className="text-halloween-cream space-y-4">
+                  <div className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-halloween-orange shrink-0 mt-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <div>
+                      <h3 className="font-bold text-halloween-orange mb-2">สถานที่จัดงาน</h3>
+                      <p className="text-sm sm:text-base">Larngear, Faculty of Engineering</p>
+                      <p className="text-sm sm:text-base">Chulalongkorn University</p>
+                    </div>
+                  </div>
 
-              {/* Sponsors Section */}
-              <div className="mt-6 sm:mt-8">
-                <Sponsors />
+                  <div className="flex items-start gap-3">
+                    <svg className="w-6 h-6 text-halloween-orange shrink-0 mt-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                    </svg>
+                    <div>
+                      <h3 className="font-bold text-halloween-orange mb-2">วันและเวลา</h3>
+                      <p className="text-sm sm:text-base">28 ตุลาคม 2568</p>
+                      <p className="text-sm sm:text-base">เวลา 16:00 - 21:00 น.</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 p-4 bg-halloween-charcoal/50 rounded-lg border border-halloween-purple">
+                    <p className="text-center text-halloween-orange font-bold mb-2">📍 แผนที่โดยละเอียด</p>
+                    <p className="text-center text-halloween-gray text-sm">Coming Soon</p>
+                  </div>
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        {/* Sponsors Section - Same as menu page */}
+        <div className="shrink-0 w-full">
+          <div className="bg-halloween-charcoal/70 border-t-2 border-halloween-orange py-2 px-0">
+            <p className="text-center text-halloween-orange font-bold text-xs mb-1.5">Our Sponsors</p>
+            <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
+              {[
+                { src: '/sponsors/cqk-hotpot-logo-2-copy.png', alt: 'CQK Hotpot' },
+                { src: '/sponsors/escaperoomlogo.png', alt: 'Escape Room' },
+                { src: '/sponsors/tri-petch-isuzu-sales-.png', alt: 'Tri Petch Isuzu Sales' },
+                { src: '/sponsors/img_0628.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7475.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7476.jpg', alt: 'Sponsor' },
+                { src: '/sponsors/img_7484.jpg', alt: 'Sponsor' },
+              ].map((sponsor, index) => (
+                <div key={index} className="w-[35px] h-[35px] sm:w-[40px] sm:h-[40px] md:w-[45px] md:h-[45px] flex items-center justify-center">
+                  <Image
+                    src={sponsor.src}
+                    alt={sponsor.alt}
+                    width={45}
+                    height={45}
+                    className="w-full h-full object-contain"
+                    quality={90}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

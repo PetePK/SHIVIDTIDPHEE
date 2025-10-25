@@ -814,19 +814,14 @@ function QRScanner() {
           </div>
         )}
 
-        {/* Sponsors Section - Mobile (fixed at bottom) */}
-        {!scanning && !mediaStream && (
-          <div className="fixed bottom-0 left-0 right-0 bg-halloween-dark border-t-2 border-halloween-orange p-4">
-            <Sponsors title="" />
-          </div>
-        )}
       </div>
     );
   }
 
   // DESKTOP/TABLET LAYOUT
   return (
-    <div className="flex gap-4 h-[calc(100vh-200px)]">
+    <div className="w-full pb-24">
+      <div className="flex gap-4 h-[calc(100vh-280px)] w-full">
       {/* Camera Section - 2/3 width */}
       <div className="w-2/3">
         <h2 className="text-2xl font-bold text-halloween-orange mb-4">
@@ -950,11 +945,10 @@ function QRScanner() {
           </div>
         </div>
       )}
-
-      {/* Sponsors Section - Desktop */}
-      <div className="mt-6 w-full">
-        <Sponsors />
       </div>
+
+      {/* Fixed Sponsors centered at bottom */}
+      <Sponsors />
     </div>
   );
 }

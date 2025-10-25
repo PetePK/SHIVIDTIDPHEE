@@ -17,26 +17,25 @@ interface SponsorsProps {
   className?: string;
 }
 
-export default function Sponsors({ title = 'ผู้สนับสนุน', className = '' }: SponsorsProps) {
+export default function Sponsors({ title = 'Our Sponsors', className = '' }: SponsorsProps) {
   return (
-    <div className={`fixed bottom-4 left-1/2 -translate-x-1/2 md:left-auto md:right-4 md:translate-x-0 z-40 ${className}`}>
+    <div className={`fixed bottom-3 left-1/2 -translate-x-1/2 lg:bottom-5 z-40 max-w-[95vw] ${className}`}>
       {title && (
-        <p className="text-halloween-orange font-bold text-xs mb-2 text-center md:text-right">
+        <p className="text-halloween-orange font-bold text-xs mb-2 text-center">
           {title}
         </p>
       )}
-      <div className="flex items-center justify-center md:justify-end gap-2">
+      <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4">
         {sponsors.map((sponsor, index) => (
           <div
             key={index}
-            className="hover:scale-110 transition-transform"
-            style={{ width: '45px', height: '45px' }}
+            className="w-[50px] h-[50px] sm:w-[55px] sm:h-[55px] md:w-[60px] md:h-[60px] lg:w-[65px] lg:h-[65px] hover:scale-110 transition-transform flex items-center justify-center"
           >
             <Image
               src={sponsor.src}
               alt={sponsor.alt}
-              width={45}
-              height={45}
+              width={65}
+              height={65}
               className="w-full h-full object-contain"
               quality={90}
             />

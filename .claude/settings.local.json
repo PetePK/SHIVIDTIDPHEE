@@ -1,24 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node optimize-questions.js)",
-      "Bash(npm uninstall:*)",
-      "Bash(npm install:*)",
-      "Read(//c/Users/petek/AppData/Local/npm-cache/_logs/**)",
+      "Bash(node add-white-bg.js)",
+      "Bash(node process-sponsors.js)",
       "Bash(npm cache clean:*)",
-      "Bash(pnpm install)",
-      "Bash(node optimize-sponsors.js)",
-      "Bash(node replace-sponsors.js)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(npm run build)",
-      "Bash(node fix-sponsors.js)",
-      "Bash(node replace-sponsors-final.js)",
-      "Bash(git checkout:*)",
-      "Bash(node:*)",
-      "Bash(for f in *.png.tmp)",
-      "Bash(do mv \"$f\" \"$f%.tmp\")"
+      "Bash(pnpm store prune:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
