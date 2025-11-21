@@ -45,3 +45,6 @@ next-env.d.ts
 # Temp files
 nul
 *.tmp
+
+# Claude Code settings
+.claude/
