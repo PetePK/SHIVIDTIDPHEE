@@ -6,6 +6,9 @@ import jsQR from 'jsqr';
 import BackButton from '@/components/BackButton';
 import Sponsors from '@/components/Sponsors';
 
+// Force dynamic rendering (don't prerender at build time)
+export const dynamic = 'force-dynamic';
+
 type Registration = {
   id: string;
   created_at: string;
@@ -437,17 +440,14 @@ function QRScanner() {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [recentAttendees, setRecentAttendees] = useState<Registration[]>([]);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
   const scanIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Detect if mobile device
+  // Detect mobile device on mount
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(/Mobi|Android|iPhone/i.test(navigator.userAgent));
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    if (typeof window !== 'undefined') {
+      setIsMobileDevice(/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+    }
   }, []);
 
   // Subscribe to real-time attendance updates
@@ -735,7 +735,7 @@ function QRScanner() {
   }, []);
 
   // MOBILE LAYOUT
-  if (isMobile) {
+  if (isMobileDevice) {
     return (
       <div className="fixed inset-0 bg-halloween-dark">
         {!scanning && !mediaStream ? (

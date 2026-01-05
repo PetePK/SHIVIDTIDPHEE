@@ -287,14 +287,14 @@ export default function RegistrationPage() {
             <form className="space-y-5 sm:space-y-6">
               {/* Student ID */}
               <div>
-                <label className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
                   รหัสนิสิต *
                 </label>
                 <input
                   type="text"
                   value={formData.studentId}
                   onChange={(e) => updateField('studentId', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none transition-colors ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.studentId ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   placeholder="กรอกรหัสนิสิต"
@@ -307,14 +307,14 @@ export default function RegistrationPage() {
 
               {/* Email */}
               <div>
-                <label className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
                   อีเมล *
                 </label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => updateField('email', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none transition-colors ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.email ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   placeholder="example@email.com"
@@ -327,7 +327,7 @@ export default function RegistrationPage() {
 
               {/* Full Name */}
               <div>
-                <label htmlFor="fullName" className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label htmlFor="fullName" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
                   ชื่อ - นามสกุล *
                 </label>
                 <input
@@ -335,7 +335,7 @@ export default function RegistrationPage() {
                   type="text"
                   value={formData.fullName}
                   onChange={(e) => updateField('fullName', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none transition-colors ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.fullName ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   placeholder="กรอกชื่อ-นามสกุล"
@@ -348,14 +348,14 @@ export default function RegistrationPage() {
 
               {/* Faculty */}
               <div>
-                <label htmlFor="faculty" className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label htmlFor="faculty" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
                   คณะ *
                 </label>
                 <select
                   id="faculty"
                   value={formData.faculty}
                   onChange={(e) => updateField('faculty', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none transition-colors ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.faculty ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   required
@@ -374,39 +374,44 @@ export default function RegistrationPage() {
 
               {/* Gender */}
               <div>
-                <label className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label className="block text-sm sm:text-base text-halloween-cream font-semibold mb-3">
                   เพศ *
                 </label>
-                <div className={`space-y-2 ${errors.gender ? 'p-2 border-2 border-halloween-red rounded' : ''}`}>
+                <div className={`space-y-2.5 ${errors.gender ? 'p-3 border-2 border-halloween-red rounded-lg' : ''}`}>
                   {GENDERS.map((option) => (
-                    <label key={option} className="flex items-center text-sm sm:text-base text-halloween-cream cursor-pointer">
-                      <input
-                        type="radio"
-                        name="gender"
-                        value={option}
-                        checked={formData.gender === option}
-                        onChange={(e) => updateField('gender', e.target.value)}
-                        className="mr-3 cursor-pointer"
-                      />
-                      {option}
+                    <label key={option} className="flex items-center text-sm sm:text-base text-halloween-cream cursor-pointer group">
+                      <div className="relative flex items-center">
+                        <input
+                          type="radio"
+                          name="gender"
+                          value={option}
+                          checked={formData.gender === option}
+                          onChange={(e) => updateField('gender', e.target.value)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-halloween-purple peer-checked:border-halloween-orange peer-checked:bg-halloween-orange/20 transition-all duration-200 flex items-center justify-center mr-3 group-hover:border-halloween-orange">
+                          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-halloween-orange opacity-0 peer-checked:opacity-100 transition-opacity duration-200"></div>
+                        </div>
+                      </div>
+                      <span className="group-hover:text-halloween-orange transition-colors duration-200">{option}</span>
                     </label>
                   ))}
                 </div>
                 {errors.gender && (
-                  <p className="mt-1 text-sm text-halloween-red">{errors.gender}</p>
+                  <p className="mt-2 text-sm text-halloween-red">{errors.gender}</p>
                 )}
               </div>
 
               {/* Year */}
               <div>
-                <label htmlFor="year" className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label htmlFor="year" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
                   ชั้นปี *
                 </label>
                 <select
                   id="year"
                   value={formData.year}
                   onChange={(e) => updateField('year', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none transition-colors ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.year ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   required
@@ -425,14 +430,14 @@ export default function RegistrationPage() {
 
               {/* Referral Source */}
               <div>
-                <label htmlFor="referralSource" className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label htmlFor="referralSource" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
                   ช่องทางรับรู้งาน *
                 </label>
                 <select
                   id="referralSource"
                   value={formData.referralSource}
                   onChange={(e) => updateField('referralSource', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none transition-colors ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.referralSource ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   required
@@ -451,37 +456,44 @@ export default function RegistrationPage() {
 
               {/* Interested Activities */}
               <div>
-                <label className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label className="block text-sm sm:text-base text-halloween-cream font-semibold mb-3">
                   กิจกรรมที่สนใจ *
                 </label>
-                <div className={`space-y-2 ${errors.interestedActivities ? 'p-2 border-2 border-halloween-red rounded' : ''}`}>
+                <div className={`space-y-2.5 ${errors.interestedActivities ? 'p-3 border-2 border-halloween-red rounded-lg' : ''}`}>
                   {ACTIVITIES.map((activity) => (
-                    <label key={activity} className="flex items-center text-sm sm:text-base text-halloween-cream cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.interestedActivities.includes(activity)}
-                        onChange={() => handleCheckbox(activity)}
-                        className="mr-3 cursor-pointer"
-                      />
-                      {activity}
+                    <label key={activity} className="flex items-center text-sm sm:text-base text-halloween-cream cursor-pointer group">
+                      <div className="relative flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={formData.interestedActivities.includes(activity)}
+                          onChange={() => handleCheckbox(activity)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded border-2 border-halloween-purple peer-checked:border-halloween-orange peer-checked:bg-halloween-orange transition-all duration-200 flex items-center justify-center mr-3 group-hover:border-halloween-orange">
+                          <svg className="w-3 h-3 sm:w-4 sm:h-4 text-halloween-dark opacity-0 peer-checked:opacity-100 transition-opacity duration-200" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" stroke="currentColor">
+                            <path d="M5 13l4 4L19 7"></path>
+                          </svg>
+                        </div>
+                      </div>
+                      <span className="group-hover:text-halloween-orange transition-colors duration-200">{activity}</span>
                     </label>
                   ))}
                 </div>
                 {errors.interestedActivities && (
-                  <p className="mt-1 text-sm text-halloween-red">{errors.interestedActivities}</p>
+                  <p className="mt-2 text-sm text-halloween-red">{errors.interestedActivities}</p>
                 )}
               </div>
 
               {/* Transportation */}
               <div>
-                <label htmlFor="transportation" className="block text-sm sm:text-base text-halloween-cream font-bold mb-2">
+                <label htmlFor="transportation" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
                   วิธีการเดินทาง *
                 </label>
                 <select
                   id="transportation"
                   value={formData.transportation}
                   onChange={(e) => updateField('transportation', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none transition-colors ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.transportation ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   required
@@ -537,25 +549,32 @@ export default function RegistrationPage() {
             </div>
 
             <div className="mb-5 sm:mb-6 md:mb-8">
-                <label className={`flex items-start text-xs sm:text-sm md:text-base text-halloween-cream cursor-pointer ${
-                errors.pdpa ? 'p-2 border-2 border-halloween-red rounded' : ''
+                <label className={`flex items-start text-xs sm:text-sm md:text-base text-halloween-cream cursor-pointer group ${
+                errors.pdpa ? 'p-3 border-2 border-halloween-red rounded-lg' : ''
               }`}>
-                <input
-                  type="checkbox"
-                  checked={pdpaConsent}
-                  onChange={(e) => {
-                    setPdpaConsent(e.target.checked);
-                    if (e.target.checked && errors.pdpa) {
-                      setErrors((prev) => ({ ...prev, pdpa: undefined }));
-                    }
-                  }}
-                  required
-                  className="mr-2 sm:mr-3 mt-1 cursor-pointer shrink-0"
-                />
-                <span>ข้าพเจ้ายอมรับและยินยอม *</span>
+                <div className="relative flex items-start">
+                  <input
+                    type="checkbox"
+                    checked={pdpaConsent}
+                    onChange={(e) => {
+                      setPdpaConsent(e.target.checked);
+                      if (e.target.checked && errors.pdpa) {
+                        setErrors((prev) => ({ ...prev, pdpa: undefined }));
+                      }
+                    }}
+                    required
+                    className="sr-only peer"
+                  />
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded border-2 border-halloween-purple peer-checked:border-halloween-orange peer-checked:bg-halloween-orange transition-all duration-200 flex items-center justify-center mr-2 sm:mr-3 mt-0.5 shrink-0 group-hover:border-halloween-orange">
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4 text-halloween-dark opacity-0 peer-checked:opacity-100 transition-opacity duration-200" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" viewBox="0 0 24 24" stroke="currentColor">
+                      <path d="M5 13l4 4L19 7"></path>
+                    </svg>
+                  </div>
+                </div>
+                <span className="group-hover:text-halloween-orange transition-colors duration-200">ข้าพเจ้ายอมรับและยินยอม *</span>
               </label>
               {errors.pdpa && (
-                <p className="mt-1 text-xs sm:text-sm text-halloween-red">{errors.pdpa}</p>
+                <p className="mt-2 text-xs sm:text-sm text-halloween-red">{errors.pdpa}</p>
               )}
             </div>
 
@@ -603,7 +622,8 @@ export default function RegistrationPage() {
                     width={65}
                     height={65}
                     className="w-full h-full object-contain"
-                    quality={90}
+                    quality={75}
+                    loading="lazy"
                   />
                 </div>
               ))}

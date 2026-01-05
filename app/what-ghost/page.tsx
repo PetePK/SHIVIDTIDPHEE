@@ -409,7 +409,7 @@ export default function WhatGhostPage() {
                       height={200}
                       className="rounded-lg w-32 h-32 sm:w-[200px] sm:h-[200px]"
                       priority
-                      quality={85}
+                      quality={75}
                     />
                   </div>
                 )}

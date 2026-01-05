@@ -37,7 +37,8 @@ export default function Sponsors({ title = 'Our Sponsors', className = '' }: Spo
               width={65}
               height={65}
               className="w-full h-full object-contain"
-              quality={90}
+              quality={75}
+              loading="lazy"
             />
           </div>
         ))}

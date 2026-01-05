@@ -112,7 +112,7 @@ export default function MenuPage() {
                 height={200}
                 className="rounded-lg w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 object-contain"
                 priority
-                quality={85}
+                quality={75}
               />
             </div>
 
@@ -205,7 +205,8 @@ export default function MenuPage() {
                     width={45}
                     height={45}
                     className="w-full h-full object-contain"
-                    quality={90}
+                    quality={75}
+                    loading="lazy"
                   />
                 </div>
               ))}

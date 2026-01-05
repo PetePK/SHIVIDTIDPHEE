@@ -58,7 +58,7 @@ export default function EventMapPage() {
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-3xl">
             <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-6 sm:p-8">
-              <h2 className="text-2xl sm:text-3xl font-bold text-halloween-orange mb-6 text-center">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 text-center">
                 Event Map
               </h2>
 
@@ -81,7 +81,7 @@ export default function EventMapPage() {
                     </svg>
                     <div>
                       <h3 className="font-bold text-halloween-orange mb-2">วันและเวลา</h3>
-                      <p className="text-sm sm:text-base">28 ตุลาคม 2568</p>
+                      <p className="text-sm sm:text-base">13 มกราคม 2569</p>
                       <p className="text-sm sm:text-base">เวลา 16:00 - 21:00 น.</p>
                     </div>
                   </div>
@@ -118,7 +118,8 @@ export default function EventMapPage() {
                     width={45}
                     height={45}
                     className="w-full h-full object-contain"
-                    quality={90}
+                    quality={75}
+                    loading="lazy"
                   />
                 </div>
               ))}

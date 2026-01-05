@@ -73,7 +73,7 @@ export default function MyTicketPage() {
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-md">
             <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-6 sm:p-8 text-center">
-              <h2 className="text-2xl sm:text-3xl font-bold text-halloween-orange mb-4 sm:mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
                 My Ticket
               </h2>
 

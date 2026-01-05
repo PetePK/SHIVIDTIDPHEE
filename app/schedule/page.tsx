@@ -58,7 +58,7 @@ export default function SchedulePage() {
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-3xl">
             <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-6 sm:p-8">
-              <h2 className="text-2xl sm:text-3xl font-bold text-halloween-orange mb-6 text-center">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 text-center">
                 Event Schedule
               </h2>
 
@@ -71,7 +71,7 @@ export default function SchedulePage() {
                         <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                       <div className="text-left">
-                        <p className="font-bold text-lg sm:text-xl">28 ตุลาคม 2568</p>
+                        <p className="font-bold text-lg sm:text-xl">13 มกราคม 2569</p>
                         <p className="text-sm">16:00 - 21:00 น.</p>
                       </div>
                     </div>
@@ -135,7 +135,8 @@ export default function SchedulePage() {
                     width={45}
                     height={45}
                     className="w-full h-full object-contain"
-                    quality={90}
+                    quality={75}
+                    loading="lazy"
                   />
                 </div>
               ))}
