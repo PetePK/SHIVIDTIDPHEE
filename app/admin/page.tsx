@@ -692,7 +692,7 @@ function QRScanner() {
       });
 
       // Clear result and allow next scan after 3 seconds (mobile gets confirm button)
-      if (!isMobile) {
+      if (!isMobileDevice) {
         setTimeout(() => {
           setResult(null);
           setProcessing(false);
