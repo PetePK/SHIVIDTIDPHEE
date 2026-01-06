@@ -100,7 +100,7 @@ export default function SchedulePage() {
                       className={`flex items-start gap-3 p-2.5 rounded-lg bg-halloween-dark/40 border-l-3 border-halloween-purple hover:bg-halloween-purple/20 hover:border-halloween-orange transition-all group ${item.clickable ? 'cursor-pointer hover:scale-105 hover:shadow-lg hover:shadow-halloween-purple/30' : ''}`}
                     >
                       <div className="shrink-0 pt-0.5">
-                        <div className="bg-halloween-purple/80 px-2.5 py-1 rounded-md">
+                        <div className="bg-halloween-orange px-2.5 py-1 rounded-md">
                           <span className="font-black text-white text-xs">{item.time}</span>
                         </div>
                       </div>
