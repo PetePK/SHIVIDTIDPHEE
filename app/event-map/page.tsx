@@ -126,7 +126,7 @@ export default function EventMapPage() {
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A05</span> - ราชาหมู</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A06</span> - bro_ok (โบร - โอ - เค)</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A07</span> - กรีก! โยเกิร์ต</div>
-                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A08</span> - ละคริววะ</div>
+                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A08</span> - ละครวิดวะ</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A09</span> - บาร์ลับต้องมนต์</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A10</span> - Milk & Tea</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A11</span> - Disney villain soda</div>
