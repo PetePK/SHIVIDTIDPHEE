@@ -55,58 +55,90 @@ export default function SchedulePage() {
         </button>
 
         {/* Centered Content */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="w-full max-w-3xl">
-            <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-6 sm:p-8">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 text-center">
-                Event Schedule
-              </h2>
+        <div className="flex-1 flex items-center justify-center py-6">
+          <div className="w-full max-w-5xl space-y-6">
+            {/* Page Title */}
+            <div className="text-center mb-8">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-halloween-orange drop-shadow-[0_0_15px_rgba(255,107,0,0.5)] tracking-tight mb-2">
+                EVENT SCHEDULE
+              </h1>
+              <div className="inline-flex items-center gap-3 text-halloween-cream bg-halloween-charcoal/80 px-6 py-3 rounded-full border-2 border-halloween-orange/50">
+                <svg className="w-6 h-6 text-halloween-orange" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <div>
+                  <p className="font-bold text-lg">13 มกราคม 2569</p>
+                  <p className="text-sm text-halloween-orange">16:00 - 21:00 น.</p>
+                </div>
+              </div>
+            </div>
 
-              <div className="bg-halloween-dark rounded-lg p-6 sm:p-8 border-2 border-halloween-purple">
-                <div className="space-y-6">
-                  {/* Event Date */}
-                  <div className="text-center pb-4 border-b border-halloween-purple">
-                    <div className="inline-flex items-center gap-3 text-halloween-orange">
-                      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <div className="text-left">
-                        <p className="font-bold text-lg sm:text-xl">13 มกราคม 2569</p>
-                        <p className="text-sm">16:00 - 21:00 น.</p>
+            <div className="grid md:grid-cols-2 gap-5 px-4">
+              {/* Main Stage Schedule - Clean Timeline */}
+              <div className="bg-linear-to-br from-halloween-purple/25 via-halloween-charcoal/90 to-halloween-dark/95 border border-halloween-purple/40 rounded-xl p-5 shadow-xl">
+                <div className="mb-4 pb-3 border-b-2 border-halloween-purple/30">
+                  <h2 className="text-2xl font-black text-white tracking-tight">
+                    MAIN STAGE
+                  </h2>
+                  <p className="text-halloween-purple text-xs font-bold mt-1 uppercase tracking-widest">Performance Schedule</p>
+                </div>
+
+                <div className="space-y-2.5">
+                  {[
+                    { time: '16:00', event: 'Register and Lost&Found' },
+                    { time: '17:35', event: 'Intania Music Club', type: 'Acoustic' },
+                    { time: '18:10', event: 'BANDSHI', type: 'Acoustic' },
+                    { time: '18:34', event: 'Dance Performance', artist: 'BANDSHI' },
+                    { time: '18:40', event: 'Dance Performance', artist: 'StepOut' },
+                    { time: '18:51', event: 'Collab Dance' },
+                    { time: '19:30', event: 'Movie Starts', title: 'The Conjuring' },
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-start gap-3 p-2.5 rounded-lg bg-halloween-dark/40 border-l-3 border-halloween-purple hover:bg-halloween-purple/20 hover:border-halloween-orange transition-all group">
+                      <div className="shrink-0 pt-0.5">
+                        <div className="bg-halloween-purple/80 px-2.5 py-1 rounded-md">
+                          <span className="font-black text-white text-xs">{item.time}</span>
+                        </div>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-bold text-sm group-hover:text-halloween-orange transition-colors">
+                          {item.event}
+                        </p>
+                        {(item.type || item.artist || item.title) && (
+                          <p className="text-halloween-cream/70 text-xs mt-0.5">
+                            {item.type || item.artist || item.title}
+                          </p>
+                        )}
                       </div>
                     </div>
-                  </div>
+                  ))}
+                </div>
+              </div>
 
-                  {/* Activities Preview */}
-                  <div className="space-y-3">
-                    <h3 className="font-bold text-halloween-orange text-center mb-4">🎃 กิจกรรมภายในงาน</h3>
+              {/* Activities - Bold Cards */}
+              <div className="bg-linear-to-br from-halloween-orange/20 via-halloween-charcoal/90 to-halloween-dark/95 border border-halloween-orange/40 rounded-xl p-5 shadow-xl">
+                <div className="mb-4 pb-3 border-b-2 border-halloween-orange/30">
+                  <h2 className="text-2xl font-black text-white tracking-tight text-center">
+                    กิจกรรมภายในงาน
+                  </h2>
+                  <p className="text-halloween-orange text-xs font-bold mt-1 uppercase tracking-widest text-center">Available All Night</p>
+                </div>
 
-                    <div className="flex items-center gap-3 p-3 bg-halloween-charcoal/50 rounded-lg">
-                      <span className="text-2xl">🎬</span>
-                      <span className="text-halloween-cream text-sm sm:text-base">หนังกลางแปลงสุดหลอน</span>
+                <div className="space-y-2.5">
+                  {[
+                    { name: 'หนังกลางแปลงสุดหลอน', tag: 'MOVIE' },
+                    { name: 'บ้านผีสิง', tag: 'HAUNTED' },
+                    { name: 'โชว์สุดพิเศษ', tag: 'SHOW' },
+                    { name: 'ร้านค้านิสิต', tag: 'VENDOR' },
+                  ].map((activity, index) => (
+                    <div key={index} className="relative bg-halloween-dark/60 border-2 border-halloween-orange/30 rounded-lg p-3.5 hover:border-halloween-orange hover:bg-halloween-orange/10 transition-all group overflow-hidden">
+                      <div className="absolute top-2 right-2 bg-halloween-orange/20 px-2 py-0.5 rounded-full">
+                        <span className="text-halloween-orange text-[10px] font-black tracking-wider">{activity.tag}</span>
+                      </div>
+                      <p className="text-white font-bold text-base pr-16 group-hover:text-halloween-orange transition-colors">
+                        {activity.name}
+                      </p>
                     </div>
-
-                    <div className="flex items-center gap-3 p-3 bg-halloween-charcoal/50 rounded-lg">
-                      <span className="text-2xl">🏚️</span>
-                      <span className="text-halloween-cream text-sm sm:text-base">บ้านผีสิง</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-3 bg-halloween-charcoal/50 rounded-lg">
-                      <span className="text-2xl">💃</span>
-                      <span className="text-halloween-cream text-sm sm:text-base">โชว์สุดพิเศษ</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-3 bg-halloween-charcoal/50 rounded-lg">
-                      <span className="text-2xl">🛍️</span>
-                      <span className="text-halloween-cream text-sm sm:text-base">ร้านค้านิสิต</span>
-                    </div>
-                  </div>
-
-                  {/* Coming Soon */}
-                  <div className="mt-6 p-4 bg-halloween-orange/10 rounded-lg border border-halloween-orange">
-                    <p className="text-center text-halloween-orange font-bold">📋 กำหนดการโดยละเอียด</p>
-                    <p className="text-center text-halloween-gray text-sm mt-1">Coming Soon</p>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
