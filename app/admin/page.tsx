@@ -645,9 +645,8 @@ function QRScanner() {
         .single();
 
       if (error || !data) {
-        setResult({ success: false, message: 'ไม่พบ QR Code นี้ในระบบ' });
+        // QR not found - silently ignore and continue scanning
         setProcessing(false);
-        setTimeout(() => setResult(null), 3000);
         return;
       }
 
