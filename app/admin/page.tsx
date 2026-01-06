@@ -155,6 +155,7 @@ function AttendanceTable() {
   const [hiddenColumns, setHiddenColumns] = useState<Set<string>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [checkedInCount, setCheckedInCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 50;
 
@@ -204,6 +205,19 @@ function AttendanceTable() {
       const { count } = await query;
       setTotalCount(count || 0);
 
+      // Get checked-in count
+      let checkedInQuery = supabase
+        .from('registrations')
+        .select('*', { count: 'exact', head: true })
+        .eq('attended', true);
+
+      if (searchQuery.trim()) {
+        checkedInQuery = checkedInQuery.ilike('student_id', `%${searchQuery.trim()}%`);
+      }
+
+      const { count: attendedCount } = await checkedInQuery;
+      setCheckedInCount(attendedCount || 0);
+
       // Reset to page 1 if search changes and current page is out of bounds
       const maxPage = Math.ceil((count || 0) / itemsPerPage);
       if (currentPage > maxPage && maxPage > 0) {
@@ -249,6 +263,9 @@ function AttendanceTable() {
       )
     );
 
+    // Update checked-in count optimistically
+    setCheckedInCount((prev) => (!currentStatus ? prev + 1 : prev - 1));
+
     try {
       const { error } = await supabase
         .from('registrations')
@@ -259,7 +276,7 @@ function AttendanceTable() {
         .eq('id', id);
 
       if (error) {
-        // Revert optimistic update on error
+        // Revert optimistic updates on error
         setRegistrations((prev) =>
           prev.map((reg) =>
             reg.id === id
@@ -271,6 +288,7 @@ function AttendanceTable() {
               : reg
           )
         );
+        setCheckedInCount((prev) => (currentStatus ? prev + 1 : prev - 1));
         throw error;
       }
     } catch (error) {
@@ -304,9 +322,61 @@ function AttendanceTable() {
   }
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const checkInPercentage = totalCount > 0 ? Math.round((checkedInCount / totalCount) * 100) : 0;
 
   return (
     <div>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Total People */}
+        <div className="bg-halloween-charcoal border-2 border-halloween-purple rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-halloween-gray text-sm font-bold mb-1 font-iannnnn-owl">จำนวนผู้ลงทะเบียน</p>
+              <p className="text-halloween-cream text-4xl font-black">{totalCount}</p>
+            </div>
+            <div className="bg-halloween-purple/20 p-4 rounded-lg">
+              <svg className="w-8 h-8 text-halloween-purple" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Check-ins */}
+        <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-halloween-gray text-sm font-bold mb-1 font-iannnnn-owl">จำนวนผู้เช็คอิน</p>
+              <p className="text-halloween-orange text-4xl font-black">{checkedInCount}</p>
+            </div>
+            <div className="bg-halloween-orange/20 p-4 rounded-lg">
+              <svg className="w-8 h-8 text-halloween-orange" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Progress Bar */}
+      <div className="bg-halloween-charcoal border-2 border-halloween-purple rounded-lg p-6 mb-6">
+        <div className="flex items-center justify-between mb-3">
+          <p className="text-halloween-cream font-bold font-iannnnn-owl">ความคืบหน้าการเช็คอิน</p>
+          <p className="text-halloween-orange text-2xl font-black">{checkInPercentage}%</p>
+        </div>
+        <div className="w-full bg-halloween-dark rounded-full h-6 overflow-hidden border-2 border-halloween-purple">
+          <div
+            className="bg-linear-to-r from-halloween-orange to-halloween-red h-full transition-all duration-500 ease-out flex items-center justify-end px-2"
+            style={{ width: `${checkInPercentage}%` }}
+          >
+            {checkInPercentage > 10 && (
+              <span className="text-white text-xs font-bold">{checkedInCount}/{totalCount}</span>
+            )}
+          </div>
+        </div>
+      </div>
+
       <div className="mb-6">
         {/* Search Input */}
         <div className="flex items-center gap-4">
