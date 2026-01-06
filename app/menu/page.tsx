@@ -119,7 +119,7 @@ export default function MenuPage() {
             {/* Ghost Name or Question */}
             {userData.ghost_result ? (
               <>
-                <p className="text-base sm:text-lg md:text-2xl lg:text-xl font-bold text-halloween-orange mb-2 sm:mb-3 md:mb-3">
+                <p className="text-base sm:text-lg md:text-2xl lg:text-xl font-bold text-halloween-orange mb-2 sm:mb-3 md:mb-3 font-iannnnn-owl">
                   {userData.ghost_result}
                 </p>
                 <button
@@ -128,7 +128,7 @@ export default function MenuPage() {
                   className="bg-halloween-purple hover:bg-halloween-orange border-2 border-halloween-orange text-halloween-cream hover:text-halloween-dark font-bold text-xs sm:text-sm md:text-base px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3 rounded-full transition-all active:scale-95 shadow-lg flex items-center gap-1.5 sm:gap-2"
                 >
                   <span>👻</span>
-                  <span>เล่นอีกครั้ง</span>
+                  <span className="font-iannnnn-owl">เล่นอีกครั้ง</span>
                 </button>
               </>
             ) : (

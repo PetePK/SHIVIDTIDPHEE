@@ -395,7 +395,7 @@ export default function WhatGhostPage() {
             {showResult ? (
               // Result View
               <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-4 sm:p-8 text-center">
-                <h2 className="text-xl sm:text-4xl font-bold text-halloween-orange mb-3 sm:mb-6">
+                <h2 className="text-xl sm:text-4xl font-bold text-halloween-orange mb-3 sm:mb-6 font-iannnnn-owl">
                   คุณคือ... {calculateResult().name}!
                 </h2>
 
@@ -415,10 +415,10 @@ export default function WhatGhostPage() {
                 )}
 
                 <div className="bg-halloween-dark p-3 sm:p-5 rounded-lg border border-halloween-purple mb-4 sm:mb-6">
-                  <p className="text-halloween-bone text-sm sm:text-xl mb-2 sm:mb-4">
+                  <p className="text-halloween-bone text-sm sm:text-xl mb-2 sm:mb-4 font-iannnnn-owl">
                     {calculateResult().description}
                   </p>
-                  <p className="text-halloween-cream text-xs sm:text-base">
+                  <p className="text-halloween-cream text-xs sm:text-base font-iannnnn-owl">
                     {calculateResult().theme}
                   </p>
                 </div>
@@ -426,14 +426,14 @@ export default function WhatGhostPage() {
                   <button
                     type="button"
                     onClick={() => handleNavigate('/menu')}
-                    className="bg-halloween-purple hover:bg-halloween-orange border-2 border-halloween-orange text-halloween-cream hover:text-halloween-dark font-bold px-4 py-2 sm:px-8 sm:py-3 text-sm sm:text-base rounded-lg transition-colors active:scale-95"
+                    className="bg-halloween-purple hover:bg-halloween-orange border-2 border-halloween-orange text-halloween-cream hover:text-halloween-dark font-bold px-4 py-2 sm:px-8 sm:py-3 text-sm sm:text-base rounded-lg transition-colors active:scale-95 font-iannnnn-owl"
                   >
                     กลับหน้าหลัก
                   </button>
                   <button
                     type="button"
                     onClick={resetQuiz}
-                    className="bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold px-4 py-2 sm:px-8 sm:py-3 text-sm sm:text-base rounded-lg transition-colors active:scale-95"
+                    className="bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold px-4 py-2 sm:px-8 sm:py-3 text-sm sm:text-base rounded-lg transition-colors active:scale-95 font-iannnnn-owl"
                   >
                     เล่นอีกครั้ง
                   </button>
@@ -446,7 +446,7 @@ export default function WhatGhostPage() {
                   // Loading animation within quiz card
                   <div className="flex flex-col items-center justify-center py-12 sm:py-20">
                     <div className="animate-spin h-12 w-12 sm:h-16 sm:w-16 border-4 border-halloween-orange border-t-transparent rounded-full"></div>
-                    <p className="mt-4 text-halloween-cream text-sm sm:text-lg">
+                    <p className="mt-4 text-halloween-cream text-sm sm:text-lg font-iannnnn-owl">
                       {loadingQuestion ? 'กำลังโหลดคำถามถัดไป...' : 'กำลังโหลดรูปภาพ...'}
                     </p>
                   </div>
@@ -477,7 +477,7 @@ export default function WhatGhostPage() {
                               </svg>
                             </button>
                           )}
-                          <span>คำถามที่ {currentQuestion + 1}</span>
+                          <span className="font-iannnnn-owl">คำถามที่ {currentQuestion + 1}</span>
                         </div>
                         <span>
                           {currentQuestion + 1} / {questions.length}
@@ -504,7 +504,7 @@ export default function WhatGhostPage() {
                       </div>
                     )}
 
-                    <h3 className="text-base sm:text-xl font-bold text-halloween-cream mb-2 sm:mb-4">
+                    <h3 className="text-base sm:text-xl font-bold text-halloween-cream mb-2 sm:mb-4 font-iannnnn-owl">
                       {questions[currentQuestion].q}
                     </h3>
 
@@ -516,7 +516,7 @@ export default function WhatGhostPage() {
                             key={index}
                             type="button"
                             onClick={() => handleAnswer(option.value)}
-                            className={`w-full text-left border-2 rounded-lg px-2.5 py-2 sm:px-4 sm:py-3 text-xs sm:text-base transition-all active:scale-98 ${
+                            className={`w-full text-left border-2 rounded-lg px-2.5 py-2 sm:px-4 sm:py-3 text-xs sm:text-base transition-all active:scale-98 font-iannnnn-owl ${
                               isSelected
                                 ? 'bg-halloween-orange/90 border-halloween-orange text-halloween-dark font-semibold'
                                 : 'bg-halloween-dark/90 hover:bg-halloween-purple border-halloween-purple hover:border-halloween-orange text-halloween-cream'

@@ -63,6 +63,18 @@ function LoginForm() {
               Login
             </h2>
 
+            {/* Reminder Message */}
+            <div className="bg-halloween-purple/20 border-2 border-halloween-purple rounded-lg p-3 mb-3 sm:mb-4">
+              <div className="flex items-start gap-2 sm:gap-3">
+                <span className="text-xl sm:text-2xl shrink-0">💡</span>
+                <div className="text-left">
+                  <p className="text-halloween-cream text-xs sm:text-sm font-iannnnn-owl leading-relaxed">
+                    <span className="font-bold text-halloween-orange">หมายเหตุ:</span> หากคุณยังไม่ได้ลงทะเบียน กรุณาลงทะเบียนก่อนเข้าสู่ระบบ
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Success Message */}
             {showSuccess && (
               <div className="mb-3 bg-green-900/50 border border-green-600 rounded p-2">
@@ -120,10 +132,10 @@ function LoginForm() {
             <button
               type="button"
               onClick={handleRegister}
-              className="w-full text-halloween-orange hover:text-halloween-red font-semibold text-sm transition-colors underline text-center"
+              className="w-full text-halloween-orange hover:text-halloween-red font-semibold text-sm transition-colors underline text-center font-iannnnn-owl"
               suppressHydrationWarning
             >
-              Sign up for SHIVIDTIDPHEE
+              ลงทะเบียนที่นี่
             </button>
         </div>
       </div>

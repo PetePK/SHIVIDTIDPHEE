@@ -69,7 +69,7 @@ export default function AdminPage() {
           <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-8">
             <form onSubmit={handleLogin} className="space-y-6" suppressHydrationWarning>
               <div>
-                <label className="block text-halloween-cream font-bold mb-2">
+                <label className="block text-halloween-cream font-bold mb-2 font-iannnnn-owl">
                   รหัสผ่าน
                 </label>
                 <input
@@ -77,7 +77,7 @@ export default function AdminPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-halloween-dark border-2 border-halloween-purple rounded px-4 py-3 text-halloween-cream focus:border-halloween-orange focus:outline-none"
+                  className="w-full bg-halloween-dark border-2 border-halloween-purple rounded px-4 py-3 text-halloween-cream focus:border-halloween-orange focus:outline-none font-iannnnn-owl"
                   placeholder="กรอกรหัสผ่าน"
                   required
                   suppressHydrationWarning
@@ -85,14 +85,14 @@ export default function AdminPage() {
               </div>
 
               {error && (
-                <div className="bg-halloween-red border border-halloween-orange rounded p-3 text-halloween-cream text-center">
+                <div className="bg-halloween-red border border-halloween-orange rounded p-3 text-halloween-cream text-center font-iannnnn-owl">
                   {error}
                 </div>
               )}
 
               <button
                 type="submit"
-                className="w-full bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 rounded-lg transition-colors"
+                className="w-full bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 rounded-lg transition-colors font-iannnnn-owl"
               >
                 เข้าสู่ระบบ
               </button>
@@ -131,7 +131,7 @@ export default function AdminPage() {
             <button
               type="button"
               onClick={() => setIsAuthenticated(false)}
-              className="bg-halloween-red hover:bg-halloween-orange text-halloween-cream px-4 py-2 rounded transition-colors"
+              className="bg-halloween-red hover:bg-halloween-orange text-halloween-cream px-4 py-2 rounded transition-colors font-iannnnn-owl"
             >
               ออกจากระบบ
             </button>
@@ -300,7 +300,7 @@ function AttendanceTable() {
   ];
 
   if (loading) {
-    return <div className="text-halloween-cream text-center">กำลังโหลด...</div>;
+    return <div className="text-halloween-cream text-center font-iannnnn-owl">กำลังโหลด...</div>;
   }
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
@@ -320,7 +320,7 @@ function AttendanceTable() {
                 setCurrentPage(1); // Reset to first page on search
               }}
               placeholder="ค้นหารหัสนิสิต..."
-              className="w-full bg-halloween-dark border-2 border-halloween-purple rounded px-4 py-2 text-halloween-cream focus:border-halloween-orange focus:outline-none"
+              className="w-full bg-halloween-dark border-2 border-halloween-purple rounded px-4 py-2 text-halloween-cream focus:border-halloween-orange focus:outline-none font-iannnnn-owl"
               suppressHydrationWarning
             />
           </div>
@@ -331,7 +331,7 @@ function AttendanceTable() {
                 setSearchQuery('');
                 setCurrentPage(1);
               }}
-              className="bg-halloween-gray hover:bg-halloween-red text-halloween-dark px-4 py-2 rounded transition-colors font-bold"
+              className="bg-halloween-gray hover:bg-halloween-red text-halloween-dark px-4 py-2 rounded transition-colors font-bold font-iannnnn-owl"
             >
               ล้างการค้นหา
             </button>
@@ -349,7 +349,7 @@ function AttendanceTable() {
                     !hiddenColumns.has(col.id) && (
                       <th
                         key={col.id}
-                        className="px-4 py-3 text-left text-halloween-orange font-bold"
+                        className="px-4 py-3 text-left text-halloween-orange font-bold font-iannnnn-owl"
                       >
                         {col.label}
                       </th>
@@ -409,18 +409,18 @@ function AttendanceTable() {
             type="button"
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
-            className="px-4 py-2 bg-halloween-orange text-halloween-dark font-bold rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-halloween-red transition-colors"
+            className="px-4 py-2 bg-halloween-orange text-halloween-dark font-bold rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-halloween-red transition-colors font-iannnnn-owl"
           >
             ← ก่อนหน้า
           </button>
-          <span className="text-halloween-cream px-4">
+          <span className="text-halloween-cream px-4 font-iannnnn-owl">
             หน้า {currentPage} / {totalPages}
           </span>
           <button
             type="button"
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-halloween-orange text-halloween-dark font-bold rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-halloween-red transition-colors"
+            className="px-4 py-2 bg-halloween-orange text-halloween-dark font-bold rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-halloween-red transition-colors font-iannnnn-owl"
           >
             ถัดไป →
           </button>
@@ -739,18 +739,18 @@ function QRScanner() {
       <div className="fixed inset-0 bg-halloween-dark">
         {!scanning && !mediaStream ? (
           <div className="flex flex-col items-center justify-center h-full p-4">
-            <h2 className="text-2xl font-bold text-halloween-orange mb-6 text-center">
+            <h2 className="text-2xl font-bold text-halloween-orange mb-6 text-center font-iannnnn-owl">
               สแกน QR Code เพื่อเช็คอิน
             </h2>
             <button
               type="button"
               onClick={startCamera}
-              className="w-full max-w-sm bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 rounded-lg transition-colors"
+              className="w-full max-w-sm bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 rounded-lg transition-colors font-iannnnn-owl"
             >
               เปิดกล้อง
             </button>
             {cameraError && (
-              <div className="mt-4 p-4 bg-halloween-red border border-halloween-orange rounded-lg text-halloween-cream text-center max-w-sm">
+              <div className="mt-4 p-4 bg-halloween-red border border-halloween-orange rounded-lg text-halloween-cream text-center max-w-sm font-iannnnn-owl">
                 {cameraError}
               </div>
             )}
@@ -778,7 +778,7 @@ function QRScanner() {
             <button
               type="button"
               onClick={stopCamera}
-              className="absolute top-4 right-4 bg-halloween-red hover:bg-halloween-orange text-halloween-cream px-4 py-2 rounded-lg font-bold shadow-lg"
+              className="absolute top-4 right-4 bg-halloween-red hover:bg-halloween-orange text-halloween-cream px-4 py-2 rounded-lg font-bold shadow-lg font-iannnnn-owl"
             >
               ปิดกล้อง
             </button>
@@ -795,9 +795,9 @@ function QRScanner() {
                   : 'bg-halloween-red text-halloween-cream border-halloween-orange'
               }`}
             >
-              <div className="text-3xl font-bold mb-2">{result.message}</div>
+              <div className="text-3xl font-bold mb-2 font-iannnnn-owl">{result.message}</div>
               {result.name && (
-                <div className="text-xl mb-6">{result.name}</div>
+                <div className="text-xl mb-6 font-iannnnn-owl">{result.name}</div>
               )}
               <button
                 type="button"
@@ -805,7 +805,7 @@ function QRScanner() {
                   setResult(null);
                   setProcessing(false);
                 }}
-                className="w-full bg-white hover:bg-gray-100 text-gray-900 font-bold py-3 rounded-lg transition-colors"
+                className="w-full bg-white hover:bg-gray-100 text-gray-900 font-bold py-3 rounded-lg transition-colors font-iannnnn-owl"
               >
                 ตกลง
               </button>
@@ -823,7 +823,7 @@ function QRScanner() {
       <div className="flex gap-4 h-[calc(100vh-280px)] w-full">
       {/* Camera Section - 2/3 width */}
       <div className="w-2/3">
-        <h2 className="text-2xl font-bold text-halloween-orange mb-4">
+        <h2 className="text-2xl font-bold text-halloween-orange mb-4 font-iannnnn-owl">
           สแกน QR Code เพื่อเช็คอิน
         </h2>
 
@@ -832,12 +832,12 @@ function QRScanner() {
             <button
               type="button"
               onClick={startCamera}
-              className="bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 px-8 rounded-lg transition-colors"
+              className="bg-halloween-orange hover:bg-halloween-red text-halloween-dark font-bold text-xl py-4 px-8 rounded-lg transition-colors font-iannnnn-owl"
             >
               เปิดกล้อง
             </button>
             {cameraError && (
-              <div className="mt-4 p-4 bg-halloween-red border border-halloween-orange rounded-lg text-halloween-cream text-center max-w-md">
+              <div className="mt-4 p-4 bg-halloween-red border border-halloween-orange rounded-lg text-halloween-cream text-center max-w-md font-iannnnn-owl">
                 {cameraError}
               </div>
             )}
@@ -864,14 +864,14 @@ function QRScanner() {
 
               {!scanning && mediaStream && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                  <div className="text-halloween-orange font-bold text-xl">
+                  <div className="text-halloween-orange font-bold text-xl font-iannnnn-owl">
                     กำลังเริ่มกล้อง...
                   </div>
                 </div>
               )}
 
               {processing && (
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-halloween-orange text-halloween-dark px-6 py-2 rounded-lg font-bold">
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-halloween-orange text-halloween-dark px-6 py-2 rounded-lg font-bold font-iannnnn-owl">
                   กำลังประมวลผล...
                 </div>
               )}
@@ -880,7 +880,7 @@ function QRScanner() {
             <button
               type="button"
               onClick={stopCamera}
-              className="mt-4 w-full bg-halloween-gray hover:bg-halloween-blue text-halloween-dark font-bold py-3 rounded-lg transition-colors"
+              className="mt-4 w-full bg-halloween-gray hover:bg-halloween-blue text-halloween-dark font-bold py-3 rounded-lg transition-colors font-iannnnn-owl"
             >
               ปิดกล้อง
             </button>
@@ -890,13 +890,13 @@ function QRScanner() {
 
       {/* Recent Attendees List - 1/3 width */}
       <div className="w-1/3">
-        <h2 className="text-2xl font-bold text-halloween-orange mb-4">
+        <h2 className="text-2xl font-bold text-halloween-orange mb-4 font-iannnnn-owl">
           ผู้เข้าร่วมล่าสุด ({recentAttendees.length})
         </h2>
         <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg h-full overflow-hidden flex flex-col">
           <div className="flex-1 overflow-y-auto">
             {recentAttendees.length === 0 ? (
-              <div className="p-8 text-center text-halloween-gray">
+              <div className="p-8 text-center text-halloween-gray font-iannnnn-owl">
                 ยังไม่มีผู้เข้าร่วม
               </div>
             ) : (
@@ -937,9 +937,9 @@ function QRScanner() {
                 : 'bg-halloween-red text-halloween-cream border-halloween-orange'
             }`}
           >
-            <div className="text-3xl font-bold mb-2">{result.message}</div>
+            <div className="text-3xl font-bold mb-2 font-iannnnn-owl">{result.message}</div>
             {result.name && (
-              <div className="text-2xl mt-2">{result.name}</div>
+              <div className="text-2xl mt-2 font-iannnnn-owl">{result.name}</div>
             )}
           </div>
         </div>

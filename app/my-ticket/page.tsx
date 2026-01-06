@@ -36,7 +36,7 @@ export default function MyTicketPage() {
   if (!userData) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-halloween-dark">
-        <p className="text-halloween-cream text-xl">กำลังโหลด...</p>
+        <p className="text-halloween-cream text-xl font-iannnnn-owl">กำลังโหลด...</p>
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function MyTicketPage() {
                 My Ticket
               </h2>
 
-              <p className="text-sm sm:text-base text-halloween-bone mb-6">
+              <p className="text-sm sm:text-base text-halloween-bone mb-6 font-iannnnn-owl">
                 แสดง QR Code นี้เมื่อเข้างาน
               </p>
 
@@ -93,13 +93,13 @@ export default function MyTicketPage() {
 
               <div className="bg-halloween-dark p-4 sm:p-5 rounded border border-halloween-purple space-y-3">
                 <div>
-                  <p className="text-halloween-gray text-xs sm:text-sm mb-1">ชื่อ-นามสกุล</p>
+                  <p className="text-halloween-gray text-xs sm:text-sm mb-1 font-iannnnn-owl">ชื่อ-นามสกุล</p>
                   <p className="text-halloween-cream text-lg sm:text-xl font-semibold">
                     {userData.full_name}
                   </p>
                 </div>
                 <div>
-                  <p className="text-halloween-gray text-xs sm:text-sm mb-1">รหัสนิสิต</p>
+                  <p className="text-halloween-gray text-xs sm:text-sm mb-1 font-iannnnn-owl">รหัสนิสิต</p>
                   <p className="text-halloween-orange text-xl sm:text-2xl font-mono font-bold tracking-wide">
                     {userData.student_id}
                   </p>
