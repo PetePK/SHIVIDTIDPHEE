@@ -20,7 +20,7 @@ export default function EventMapPage() {
   if (!isLoggedIn) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-halloween-dark">
-        <p className="text-halloween-cream text-xl">กำลังโหลด...</p>
+        <p className="text-halloween-cream text-xl font-iannnnn-owl">กำลังโหลด...</p>
       </div>
     );
   }
@@ -71,7 +71,7 @@ export default function EventMapPage() {
                     </svg>
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-bold text-halloween-orange mb-2 text-base sm:text-lg">สถานที่จัดงาน</h3>
+                    <h3 className="font-bold text-halloween-orange mb-2 text-base sm:text-lg font-iannnnn-owl">สถานที่จัดงาน</h3>
                     <p className="text-sm sm:text-base">Larngear, Faculty of Engineering</p>
                     <p className="text-sm sm:text-base">Chulalongkorn University</p>
                   </div>
@@ -86,9 +86,9 @@ export default function EventMapPage() {
                     </svg>
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-bold text-halloween-orange mb-2 text-base sm:text-lg">วันและเวลา</h3>
-                    <p className="text-sm sm:text-base">13 มกราคม 2569</p>
-                    <p className="text-sm sm:text-base">เวลา 16:00 - 21:00 น.</p>
+                    <h3 className="font-bold text-halloween-orange mb-2 text-base sm:text-lg font-iannnnn-owl">วันและเวลา</h3>
+                    <p className="text-sm sm:text-base font-iannnnn-owl">13 มกราคม 2569</p>
+                    <p className="text-sm sm:text-base font-iannnnn-owl">เวลา 16:00 - 21:00 น.</p>
                   </div>
                 </div>
               </div>
@@ -118,7 +118,7 @@ export default function EventMapPage() {
                 </svg>
                 <h3 className="font-bold text-white text-base sm:text-lg text-center">Student Vendor Booths</h3>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 text-halloween-orange">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 text-halloween-orange font-iannnnn-owl">
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A01</span> - ปุกปิกวิคมัน</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A02</span> - BOO-Bap 부 밥</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A03</span> - KINTIEKYEROT</div>

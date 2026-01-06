@@ -23,6 +23,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-iannnnn-owl: var(--font-iannnnn-owl);
 
   /* Custom Halloween colors */
   --color-halloween-dark: var(--halloween-dark);

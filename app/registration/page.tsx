@@ -348,14 +348,14 @@ export default function RegistrationPage() {
 
               {/* Faculty */}
               <div>
-                <label htmlFor="faculty" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
+                <label htmlFor="faculty" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2 font-iannnnn-owl">
                   คณะ *
                 </label>
                 <select
                   id="faculty"
                   value={formData.faculty}
                   onChange={(e) => updateField('faculty', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base font-iannnnn-owl focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.faculty ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   required
@@ -374,7 +374,7 @@ export default function RegistrationPage() {
 
               {/* Gender */}
               <div>
-                <label className="block text-sm sm:text-base text-halloween-cream font-semibold mb-3">
+                <label className="block text-sm sm:text-base text-halloween-cream font-semibold mb-3 font-iannnnn-owl">
                   เพศ *
                 </label>
                 <div className={`space-y-2.5 ${errors.gender ? 'p-3 border-2 border-halloween-red rounded-lg' : ''}`}>
@@ -393,7 +393,7 @@ export default function RegistrationPage() {
                           <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-halloween-orange opacity-0 peer-checked:opacity-100 transition-opacity duration-200"></div>
                         </div>
                       </div>
-                      <span className="group-hover:text-halloween-orange transition-colors duration-200">{option}</span>
+                      <span className="group-hover:text-halloween-orange transition-colors duration-200 font-iannnnn-owl">{option}</span>
                     </label>
                   ))}
                 </div>
@@ -404,14 +404,14 @@ export default function RegistrationPage() {
 
               {/* Year */}
               <div>
-                <label htmlFor="year" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
+                <label htmlFor="year" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2 font-iannnnn-owl">
                   ชั้นปี *
                 </label>
                 <select
                   id="year"
                   value={formData.year}
                   onChange={(e) => updateField('year', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base font-iannnnn-owl focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.year ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   required
@@ -430,14 +430,14 @@ export default function RegistrationPage() {
 
               {/* Referral Source */}
               <div>
-                <label htmlFor="referralSource" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
+                <label htmlFor="referralSource" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2 font-iannnnn-owl">
                   ช่องทางรับรู้งาน *
                 </label>
                 <select
                   id="referralSource"
                   value={formData.referralSource}
                   onChange={(e) => updateField('referralSource', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base font-iannnnn-owl focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.referralSource ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   required
@@ -456,7 +456,7 @@ export default function RegistrationPage() {
 
               {/* Interested Activities */}
               <div>
-                <label className="block text-sm sm:text-base text-halloween-cream font-semibold mb-3">
+                <label className="block text-sm sm:text-base text-halloween-cream font-semibold mb-3 font-iannnnn-owl">
                   กิจกรรมที่สนใจ *
                 </label>
                 <div className={`space-y-2.5 ${errors.interestedActivities ? 'p-3 border-2 border-halloween-red rounded-lg' : ''}`}>
@@ -475,7 +475,7 @@ export default function RegistrationPage() {
                           </svg>
                         </div>
                       </div>
-                      <span className="group-hover:text-halloween-orange transition-colors duration-200">{activity}</span>
+                      <span className="group-hover:text-halloween-orange transition-colors duration-200 font-iannnnn-owl">{activity}</span>
                     </label>
                   ))}
                 </div>
@@ -486,14 +486,14 @@ export default function RegistrationPage() {
 
               {/* Transportation */}
               <div>
-                <label htmlFor="transportation" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2">
+                <label htmlFor="transportation" className="block text-sm sm:text-base text-halloween-cream font-semibold mb-2 font-iannnnn-owl">
                   วิธีการเดินทาง *
                 </label>
                 <select
                   id="transportation"
                   value={formData.transportation}
                   onChange={(e) => updateField('transportation', e.target.value)}
-                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
+                  className={`w-full bg-halloween-dark border-2 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-halloween-cream text-base font-iannnnn-owl focus:border-halloween-orange focus:outline-none focus:ring-2 focus:ring-halloween-orange/20 transition-all duration-200 ${
                     errors.transportation ? 'border-halloween-red' : 'border-halloween-purple'
                   }`}
                   required

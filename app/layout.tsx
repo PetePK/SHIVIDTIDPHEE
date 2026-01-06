@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Creepster, Nosifer, Eater, Butcherman } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -36,6 +37,27 @@ const butcherman = Butcherman({
   variable: "--font-butcherman",
 });
 
+const iannnnOwl = localFont({
+  src: [
+    {
+      path: "../public/fonts/iannnnn-OWL-Thin.ttf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/iannnnn-OWL-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/iannnnn-OWL-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-iannnnn-owl",
+});
+
 export const metadata: Metadata = {
   title: "SHIVIDTIDPHEE 2025",
   description: "VIDVAxBANSHI Halloween Event - Games, Schedule, and Registration",
@@ -52,7 +74,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${creepster.variable} ${nosifer.variable} ${eater.variable} ${butcherman.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${creepster.variable} ${nosifer.variable} ${eater.variable} ${butcherman.variable} ${iannnnOwl.variable} antialiased`}
       >
         {children}
       </body>
