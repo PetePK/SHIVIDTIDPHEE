@@ -92,7 +92,7 @@ export default function SchedulePage() {
                     { time: '18:34', event: 'Dance Performance', artist: 'BANDSHI' },
                     { time: '18:40', event: 'Dance Performance', artist: 'StepOut' },
                     { time: '18:51', event: 'Collab Dance' },
-                    { time: '19:30', event: 'Movie Starts', title: 'The Conjuring', clickable: true },
+                    { time: '19:10', event: 'Movie Starts', title: 'The Conjuring', clickable: true },
                   ].map((item, index) => (
                     <div
                       key={index}
