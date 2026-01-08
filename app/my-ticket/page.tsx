@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import QRCode from 'qrcode';
+import { supabase } from '@/lib/supabase';
 
 export default function MyTicketPage() {
   const router = useRouter();
@@ -10,27 +11,45 @@ export default function MyTicketPage() {
   const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   useEffect(() => {
-    // Check if user is logged in
-    const studentId = localStorage.getItem('studentId');
-    const userDataStr = localStorage.getItem('userData');
+    const fetchUserData = async () => {
+      // Check if user is logged in
+      const studentId = localStorage.getItem('studentId');
 
-    if (!studentId || !userDataStr) {
-      router.push('/');
-      return;
-    }
+      if (!studentId) {
+        router.push('/');
+        return;
+      }
 
-    const data = JSON.parse(userDataStr);
-    setUserData(data);
+      // Fetch fresh data from Supabase to get latest attended status
+      const { data, error } = await supabase
+        .from('registrations')
+        .select('*')
+        .eq('student_id', studentId)
+        .single();
 
-    // Generate QR code
-    QRCode.toDataURL(data.qr_code, {
-      width: 400,
-      margin: 2,
-      color: {
-        dark: '#c17850',
-        light: '#1a0f0f',
-      },
-    }).then((url) => setQrCodeUrl(url));
+      if (error || !data) {
+        console.error('Error fetching user data:', error);
+        router.push('/');
+        return;
+      }
+
+      setUserData(data);
+
+      // Update localStorage with fresh data
+      localStorage.setItem('userData', JSON.stringify(data));
+
+      // Generate QR code
+      QRCode.toDataURL(data.qr_code, {
+        width: 400,
+        margin: 2,
+        color: {
+          dark: '#c17850',
+          light: '#1a0f0f',
+        },
+      }).then((url) => setQrCodeUrl(url));
+    };
+
+    fetchUserData();
   }, [router]);
 
   if (!userData) {
@@ -72,7 +91,19 @@ export default function MyTicketPage() {
         {/* Centered Content */}
         <div className="flex-1 flex items-center justify-center">
           <div className="w-full max-w-md">
-            <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-6 sm:p-8 text-center">
+            <div className="bg-halloween-charcoal/95 border-2 border-halloween-orange rounded-lg p-6 sm:p-8 text-center relative">
+              {/* Check-in Status Badge */}
+              {userData.attended && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                  <div className="bg-green-600 text-white px-6 py-2 rounded-full border-4 border-halloween-charcoal shadow-lg flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                    <span className="font-bold text-sm sm:text-base">เช็คอินแล้ว</span>
+                  </div>
+                </div>
+              )}
+
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
                 My Ticket
               </h2>
@@ -104,6 +135,17 @@ export default function MyTicketPage() {
                     {userData.student_id}
                   </p>
                 </div>
+                {userData.attended && userData.attended_at && (
+                  <div className="pt-3 border-t border-halloween-purple/50">
+                    <p className="text-halloween-gray text-xs sm:text-sm mb-1 font-iannnnn-owl">เวลาเช็คอิน</p>
+                    <p className="text-green-400 text-base sm:text-lg font-semibold font-iannnnn-owl">
+                      {new Date(userData.attended_at).toLocaleString('th-TH', {
+                        dateStyle: 'medium',
+                        timeStyle: 'short'
+                      })}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
