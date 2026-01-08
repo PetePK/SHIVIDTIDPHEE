@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 type FormData = {
@@ -65,6 +66,7 @@ const TRANSPORTATION = [
 ];
 
 export default function RegistrationPage() {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     studentId: '',
@@ -194,6 +196,28 @@ export default function RegistrationPage() {
         {/* Step 1: Event Details */}
         {step === 1 && (
           <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-6 sm:p-8 lg:p-10 xl:p-12">
+            {/* Back to Login Button */}
+            <button
+              onClick={() => router.push('/')}
+              className="mb-4 sm:mb-6 flex items-center gap-2 text-halloween-orange hover:text-halloween-red transition-colors"
+              type="button"
+            >
+              <svg
+                className="w-5 h-5 sm:w-6 sm:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              <span className="text-sm sm:text-base font-semibold">Back to Login</span>
+            </button>
+
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-halloween-orange mb-5 sm:mb-6 lg:mb-8 text-center">
               SHIVIDTIDPHEE 2025
             </h1>
@@ -277,6 +301,28 @@ export default function RegistrationPage() {
         {/* Step 2: Form */}
         {step === 2 && (
           <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-6 sm:p-8">
+            {/* Back to Login Button */}
+            <button
+              onClick={() => router.push('/')}
+              className="mb-4 sm:mb-6 flex items-center gap-2 text-halloween-orange hover:text-halloween-red transition-colors"
+              type="button"
+            >
+              <svg
+                className="w-5 h-5 sm:w-6 sm:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              <span className="text-sm sm:text-base font-semibold">Back to Login</span>
+            </button>
+
             <h1 className="text-2xl sm:text-3xl font-bold text-halloween-orange mb-2 text-center">
               SHIVIDTIDPHEE 2025
             </h1>
@@ -533,6 +579,28 @@ export default function RegistrationPage() {
         {/* Step 3: PDPA */}
         {step === 3 && (
           <div className="bg-halloween-charcoal border-2 border-halloween-orange rounded-lg p-6 sm:p-8">
+            {/* Back to Login Button */}
+            <button
+              onClick={() => router.push('/')}
+              className="mb-4 sm:mb-6 flex items-center gap-2 text-halloween-orange hover:text-halloween-red transition-colors"
+              type="button"
+            >
+              <svg
+                className="w-5 h-5 sm:w-6 sm:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              <span className="text-sm sm:text-base font-semibold">Back to Login</span>
+            </button>
+
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-halloween-orange mb-4 sm:mb-5 md:mb-6 text-center leading-tight px-2">
               ความยินยอมให้สิทธิ์ในการใช้กฎหมาย PDPA
             </h1>
