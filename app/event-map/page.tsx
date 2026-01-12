@@ -119,13 +119,13 @@ export default function EventMapPage() {
                 <h3 className="font-bold text-white text-base sm:text-lg text-center">Student Vendor Booths</h3>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 text-halloween-orange font-iannnnn-owl">
-                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A01</span> - ปุกปิกวิคมัน</div>
+                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A01</span> - ปุ๊กปิ๊กจิ๊กมัน</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A02</span> - BOO-Bap 부 밥</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A03</span> - KINTIEKYEROT</div>
-                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A04</span> - พาสต้าเดบิต เครดิตเรนิว</div>
-                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A05</span> - ราชาหมู</div>
+                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A04</span> - พาสต้าเดบิต เครดิตเรเวนิว</div>
+                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A05</span> - ราชาหิมะ</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A06</span> - bro_ok (โบร - โอ - เค)</div>
-                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A07</span> - กรีก! โยเกิร์ต</div>
+                <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A07</span> - กรี้ก ! โยเกิร์ต</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A08</span> - ละครวิดวะ</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A09</span> - บาร์ลับต้องมนต์</div>
                 <div className="text-sm sm:text-base whitespace-nowrap px-2 py-1.5 bg-halloween-dark/70 rounded"><span className="font-bold text-white">A10</span> - Milk & Tea</div>
